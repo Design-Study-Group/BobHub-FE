@@ -1,0 +1,29 @@
+.party-chat-container {
+  padding: 40px;
+  min-height: calc(100vh - 80px);
+}
+
+.party-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.party-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 8px;
+}
+
+.party-header p {
+  font-size: 1.1rem;
+  color: var(--muted-foreground);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .party-chat-container {
+    padding: 24px 0;
+  }
+}

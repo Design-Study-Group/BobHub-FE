@@ -1,36 +1,50 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --font-size: 14px;
-  --background: #ffffff;
-  --foreground: oklch(0.145 0 0);
+  --font-size: 16px;
+
+  --background: #f8f9fa;
+  --foreground: #343a40;
   --card: #ffffff;
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: #030213;
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.95 0.0058 264.53);
-  --secondary-foreground: #030213;
-  --muted: #ececf0;
-  --muted-foreground: #717182;
-  --accent: #e9ebef;
-  --accent-foreground: #030213;
-  --destructive: #d4183d;
+  --card-foreground: #343a40;
+
+  --popover: #ffffff;
+  --popover-foreground: #343a40;
+
+  /* New, more sophisticated color palette */
+  --primary: #e27726;
+  --primary-foreground: #ffffff;
+
+  --secondary: #a8f690; /* A fresh, light teal */
+  --secondary-foreground: #343a40; /* Dark text for contrast on light secondary */
+
+  --muted: #e0e0e0; /* Slightly darker muted for better contrast */
+  --muted-foreground: #757575; /* Darker muted text */
+
+  --accent: #ececec; /* A warm, inviting coral/orange */
+  --accent-foreground: #000000;
+
+  --destructive: #e74c3c; /* A standard, clear red */
   --destructive-foreground: #ffffff;
-  --border: rgba(0, 0, 0, 0.1);
-  --input: transparent;
+
+  --border: rgba(0, 0, 0, 0.15); /* Slightly more visible border */
+  --input: #ffffff;
   --input-background: #f3f3f5;
-  --switch-background: #cbced4;
+  --switch-background: #bdbdbd; /* Darker switch background */
+
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: oklch(0.708 0 0);
+  --ring: rgba(74, 144, 226, 0.5); /* Ring based on new primary */
+
+  /* Chart colors (keeping original for now) */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
+
+  --radius: 0.5rem;
+
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: #030213;
@@ -39,6 +53,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --page-background-gradient: linear-gradient(135deg, #6a82fb 0%, #fc5c7d 100%); /* A new, more appealing gradient */
 }
 
 .dark {

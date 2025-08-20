@@ -1,0 +1,17 @@
+.hamburger-button {
+  display: none; /* Hidden by default on desktop */
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--foreground);
+  padding: 8px;
+  position: relative; /* Ensure z-index works */
+  z-index: 9999; /* Force it to be on top */
+}
+
+@media (max-width: 768px) {
+  .hamburger-button {
+    display: block; /* Show hamburger button on mobile */
+  }
+}

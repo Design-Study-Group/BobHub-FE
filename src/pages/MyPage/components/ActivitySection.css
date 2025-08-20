@@ -1,0 +1,62 @@
+.activity-section {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.activity-section h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: var(--accent);
+  border-radius: var(--radius);
+  padding: 15px 20px;
+}
+
+.activity-type {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.activity-message {
+  flex-grow: 1;
+  font-size: 14px;
+  color: var(--foreground);
+}
+
+.activity-date {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .activity-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .activity-type {
+    margin-bottom: 5px;
+  }
+}

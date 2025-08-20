@@ -1,0 +1,54 @@
+.chatbot {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.chatbot-container {
+  padding: 40px;
+  min-height: calc(100vh - 80px);
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.chatbot-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.chatbot-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 8px;
+}
+
+.chatbot-header p {
+  font-size: 1.1rem;
+  color: var(--muted-foreground);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.chat-container {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 600px; /* 고정 높이 */
+}
+
+@media (max-width: 768px) {
+  .chatbot {
+    padding: 20px;
+  }
+
+  .chat-container {
+    height: 500px; /* 모바일에서 높이 조정 */
+  }
+}

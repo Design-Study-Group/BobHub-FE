@@ -1,0 +1,65 @@
+.recent-section {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 40px;
+}
+
+.recent-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+
+.recent-activities {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background-color: var(--accent);
+  border-radius: var(--radius);
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.activity-icon.party { background-color: #059669; }
+.activity-icon.betting { background-color: #dc2626; }
+.activity-icon.chatbot { background-color: #4f46e5; }
+.activity-icon.restaurant { background-color: #ea580c; }
+
+.activity-content {
+  flex-grow: 1;
+}
+
+.activity-content p {
+  font-size: 14px;
+  color: var(--foreground);
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+}
+
+.activity-time {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}

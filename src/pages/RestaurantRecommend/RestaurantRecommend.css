@@ -1,0 +1,172 @@
+.restaurant-recommend {
+  padding: 40px;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.restaurant-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.restaurant-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 8px;
+}
+
+.restaurant-header p {
+  font-size: 1.1rem;
+  color: var(--muted-foreground);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.restaurant-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.controls-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.category-filter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.category-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: 2px solid var(--border); /* Unified */
+  background: var(--card); /* Unified */
+  color: var(--foreground); /* Unified */
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.category-btn.active {
+  background: var(--primary); /* Unified */
+  color: var(--primary-foreground); /* Unified */
+  border-color: var(--primary); /* Unified */
+}
+
+.category-btn:hover:not(.active) {
+  background: var(--accent); /* Unified */
+}
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--foreground); /* Unified */
+}
+
+.sort-select {
+  padding: 8px 12px;
+  border: 1px solid var(--border); /* Unified */
+  border-radius: var(--radius);
+  background: var(--card); /* Unified */
+  color: var(--foreground); /* Unified */
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.sort-select option {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.add-restaurant-btn {
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #ff6b6b, #ffa500); /* Keeping original gradient for now */
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+  white-space: nowrap;
+}
+
+.add-restaurant-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+}
+
+.restaurants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius);
+  backdrop-filter: blur(10px);
+  margin: 20px 0;
+}
+
+.no-results-content h3 {
+  color: var(--foreground);
+  margin-bottom: 8px;
+}
+
+.no-results-content p {
+  color: var(--muted-foreground);
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .restaurant-recommend {
+    padding: 24px;
+  }
+  
+  .container {
+    padding: 0 16px;
+  }
+  
+  .restaurant-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  
+  .controls-right {
+    justify-content: space-between;
+  }
+  
+  .category-filter {
+    justify-content: flex-start; /* Align items to start for scrolling */
+    flex-wrap: nowrap; /* Prevent wrapping */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding-bottom: 10px; /* Add some padding for scrollbar if visible */
+    width: 100%; /* Ensure it takes full width */
+  }
+  
+  .restaurants-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}

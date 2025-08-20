@@ -1,0 +1,97 @@
+import React from 'react';
+import './CreatePartyForm.css';
+
+const CreatePartyForm = ({ newPartyData, setNewPartyData, handleCreateParty, setNewPartyForm }) => (
+    <div className="create-party-overlay">
+      <div className="create-party-form">
+        <div className="form-header">
+          <h3>새 파티 만들기</h3>
+          <button 
+            className="close-btn"
+            onClick={() => setNewPartyForm(false)}
+          >
+            ✕
+          </button>
+        </div>
+
+        <form onSubmit={handleCreateParty}>
+          <div className="form-group">
+            <label>파티 제목</label>
+            <input
+              key="party-title-input"
+              type="text"
+              value={newPartyData.title}
+              onChange={(e) => setNewPartyData({...newPartyData, title: e.target.value})}
+              placeholder="ex) 점심 치킨 파티"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>카테고리</label>
+            <select
+              value={newPartyData.category}
+              onChange={(e) => setNewPartyData({...newPartyData, category: e.target.value})}
+            >
+              <option value="delivery">배달</option>
+              <option value="dining">외식</option>
+              <option value="lunchbox">도시락</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>설명</label>
+            <textarea
+              value={newPartyData.description}
+              onChange={(e) => setNewPartyData({...newPartyData, description: e.target.value})}
+              placeholder="파티에 대한 설명을 입력하세요"
+              rows="3"
+            />
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label>최대 인원</label>
+              <input
+                type="number"
+                value={newPartyData.maxMembers}
+                onChange={(e) => setNewPartyData({...newPartyData, maxMembers: parseInt(e.target.value)})}
+                min="2"
+                max="10"
+              />
+            </div>
+            <div className="form-group">
+              <label>시간</label>
+              <input
+                type="datetime-local"
+                value={newPartyData.time}
+                onChange={(e) => setNewPartyData({...newPartyData, time: e.target.value})}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>장소</label>
+            <input
+              type="text"
+              value={newPartyData.location}
+              onChange={(e) => setNewPartyData({...newPartyData, location: e.target.value})}
+              placeholder="ex) 2층 강의실"
+              required
+            />
+          </div>
+
+          <div className="form-actions">
+            <button type="button" onClick={() => setNewPartyForm(false)}>
+              취소
+            </button>
+            <button type="submit" className="submit-btn">
+              파티 만들기
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+
+export default CreatePartyForm;
