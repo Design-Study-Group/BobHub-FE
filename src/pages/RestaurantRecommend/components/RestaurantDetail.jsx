@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import './RestaurantDetail.css';
+import defaultRestaurantImage from '../../../assets/icons/default-restaurant-image.png';
 
 const RestaurantDetail = ({ restaurant, onBack }) => {
   const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
   const [imageError, setImageError] = useState(false);
-  const defaultRestaurantImage = '/src/assets/icons/default-restaurant-image.png';
+  
 
   const handleImageError = () => {
     setImageError(true);

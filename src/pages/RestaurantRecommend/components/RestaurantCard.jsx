@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import './RestaurantCard.css';
+import defaultRestaurantImage from '../../../assets/icons/default-restaurant-image.png';
 
 const RestaurantCard = ({ restaurant, onClick }) => {
   const [imageError, setImageError] = useState(false);
-  const defaultRestaurantImage = '/src/assets/icons/default-restaurant-image.png';
+  
 
   const handleImageError = () => {
     setImageError(true);
