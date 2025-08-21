@@ -100,8 +100,9 @@ const RestaurantRecommend = () => {
     <div className="restaurant-recommend">
       <div className="container">
         <div className="restaurant-header">
-          <h1>🍽️ 맛집 추천</h1>
-          <p>강의장 주변 맛집을 찾아보세요! 실제 수강생들의 리뷰와 평점을 확인할 수 있어요.</p>
+          <h1>맛집 추천</h1>
+          <p>강의장 주변 맛집을 찾아보세요!</p>
+          <p>실제 수강생들의 리뷰와 평점을 확인할 수 있어요.</p>
         </div>
 
         <div className="restaurant-controls">
@@ -117,7 +118,6 @@ const RestaurantRecommend = () => {
               </button>
             ))}
           </div>
-          
           <div className="controls-right">
             <div className="sort-controls">
               <label>정렬:</label>

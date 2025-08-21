@@ -1,22 +1,10 @@
 .chatbot {
-  background-color: var(--background);
-  color: var(--foreground);
-}
-
-.chatbot-container {
-  padding: 40px;
   min-height: calc(100vh - 80px);
-}
-
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 20px;
 }
 
 .chatbot-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 
 .chatbot-header h1 {
@@ -27,28 +15,31 @@
 }
 
 .chatbot-header p {
-  font-size: 1.1rem;
+  font-size: 16px;
   color: var(--muted-foreground);
   max-width: 600px;
   margin: 0 auto;
 }
 
 .chat-container {
+  max-width: 800px;
+  margin: 0 auto;
   background-color: var(--card);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
+  border-radius: 16px;
+  overflow: hidden;
+  
   display: flex;
   flex-direction: column;
-  height: 600px; /* 고정 높이 */
 }
 
 @media (max-width: 768px) {
   .chatbot {
-    padding: 20px;
+    padding: 24px 0;
   }
-
+  
   .chat-container {
-    height: 500px; /* 모바일에서 높이 조정 */
+    margin: 0 16px;
+    
   }
 }

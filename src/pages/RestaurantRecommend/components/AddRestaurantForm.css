@@ -1,41 +1,47 @@
 /* Add Restaurant Form Styles */
 .add-restaurant-overlay {
   position: fixed;
-  top: 0;
+  top: 60px;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 20px;
+  overflow-y: auto;
 }
 
 .add-restaurant-form {
-  background: white;
-  border-radius: var(--radius);
+  margin-top: 80px;
+  background-color: var(--card);
+  border-radius: 16px;
   padding: 30px;
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 .form-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  padding-bottom: 15px;
+  padding: 24px 12px;
   border-bottom: 1px solid var(--border);
 }
 
 .form-header h3 {
-  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
   color: var(--foreground);
+  margin: 0;
+}
+
+.add-restaurant-form form {
+  padding: 24px 0;
 }
 
 .close-btn {
@@ -43,15 +49,8 @@
   border: none;
   font-size: 18px;
   cursor: pointer;
-  padding: 5px;
   color: var(--muted-foreground);
-  border-radius: var(--radius);
-  transition: all 0.2s ease;
-}
-
-.close-btn:hover {
-  background: var(--accent);
-  color: var(--foreground);
+  padding: 4px;
 }
 
 .form-group {
@@ -62,19 +61,16 @@
   display: block;
   margin-bottom: 8px;
   color: var(--foreground);
-  font-weight: 500;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--input-background);
-  color: var(--foreground);
-  transition: all 0.2s ease;
+  background: var(--background);
 }
 
 .form-group input:focus,
@@ -210,9 +206,17 @@
 }
 
 @media (max-width: 768px) {
+  .add-restaurant-overlay{
+    top: 70px;
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+
   .add-restaurant-form {
-    padding: 20px;
-    margin: 10px;
+    margin-top: 0;
+    width: 100%;
+    max-width: none;
+    height: auto;
   }
   
   .form-row {

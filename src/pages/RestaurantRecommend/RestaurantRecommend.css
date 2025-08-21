@@ -1,6 +1,6 @@
 .restaurant-recommend {
-  padding: 40px;
   min-height: 100vh;
+  background-color: var(--background);
 }
 
 .container {
@@ -33,6 +33,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
+  padding: 0;
   gap: 20px;
   flex-wrap: wrap;
 }
@@ -54,40 +55,40 @@
   align-items: center;
   gap: 6px;
   padding: 10px 16px;
-  border: 2px solid var(--border); /* Unified */
-  background: var(--card); /* Unified */
-  color: var(--foreground); /* Unified */
+  border: none;
+  background: none;
+  color: var(--muted-foreground);
   border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.2s ease;
-  backdrop-filter: blur(10px);
 }
 
 .category-btn.active {
-  background: var(--primary); /* Unified */
-  color: var(--primary-foreground); /* Unified */
-  border-color: var(--primary); /* Unified */
+  background-color: var(--background);
+  color: var(--foreground);
+  border: 0.5px solid var(--primary);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .category-btn:hover:not(.active) {
-  background: var(--accent); /* Unified */
+  color: var(--foreground);
 }
 
 .sort-controls {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--foreground); /* Unified */
+  color: var(--foreground);
 }
 
 .sort-select {
   padding: 8px 12px;
-  border: 1px solid var(--border); /* Unified */
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--card); /* Unified */
-  color: var(--foreground); /* Unified */
+  background-color: var(--input-background);
+  color: var(--foreground);
   cursor: pointer;
-  backdrop-filter: blur(10px);
 }
 
 .sort-select option {
@@ -97,19 +98,18 @@
 
 .add-restaurant-btn {
   padding: 10px 20px;
-  background: linear-gradient(45deg, #ff6b6b, #ffa500); /* Keeping original gradient for now */
-  color: white;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
   border: none;
   border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
   white-space: nowrap;
 }
 
 .add-restaurant-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .restaurants-grid {
@@ -121,9 +121,7 @@
 .no-results {
   text-align: center;
   padding: 60px 20px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: var(--radius);
-  backdrop-filter: blur(10px);
+  background-color: var(--card);
   margin: 20px 0;
 }
 
@@ -137,9 +135,15 @@
   margin-bottom: 20px;
 }
 
+
+
 @media (max-width: 768px) {
   .restaurant-recommend {
-    padding: 24px;
+    padding: 0px;
+  }
+
+  .restaurant-header {
+    margin-bottom: 0;
   }
   
   .container {
@@ -150,19 +154,36 @@
     flex-direction: column;
     align-items: stretch;
     gap: 16px;
+    padding: 1rem;
+    overflow-x: hidden;
+    margin-bottom: 0px;
   }
   
-  .controls-right {
+  .controls-right { /* Changed from controls-right */
     justify-content: space-between;
+    width: 100%;
   }
   
   .category-filter {
-    justify-content: flex-start; /* Align items to start for scrolling */
-    flex-wrap: nowrap; /* Prevent wrapping */
-    overflow-x: auto; /* Enable horizontal scrolling */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    padding-bottom: 10px; /* Add some padding for scrollbar if visible */
-    width: 100%; /* Ensure it takes full width */
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 0px;
+    scroll-snap-type: none;
+    padding-right: 1.25rem;
+    scrollbar-width: none;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .category-filter::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for WebKit browsers */
+  }
+  
+  .category-btn {
+    flex-shrink: 0; /* Prevent buttons from shrinking */
+    scroll-snap-align: start;
   }
   
   .restaurants-grid {

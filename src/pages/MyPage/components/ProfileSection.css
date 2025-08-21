@@ -2,17 +2,17 @@
   background-color: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 30px;
-  margin-bottom: 30px;
+  padding: 1.875rem; /* 30px */
+  margin-bottom: 1.875rem; /* 30px */
 }
 
 .profile-section h2 {
   font-size: 22px;
   font-weight: 600;
   color: var(--foreground);
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
   border-bottom: 1px solid var(--border);
-  padding-bottom: 10px;
+  padding-bottom: 0.625rem;
 }
 
 .profile-card {
@@ -33,13 +33,13 @@
   font-size: 20px;
   font-weight: 600;
   color: var(--foreground);
-  margin-bottom: 5px;
+  margin-bottom: 0.3125rem; /* 5px */
 }
 
 .profile-info p {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--muted-foreground);
-  margin-bottom: 3px;
+  margin-bottom: 0.1875rem; /* 3px */
 }
 
 @media (max-width: 768px) {

@@ -19,20 +19,22 @@ const GameDetail = ({
   return (
     <div className="game-detail">
       <div className="game-detail-header">
-        <button onClick={onBack} className="back-btn">
-          ← 목록으로
-        </button>
-        <h2>{selectedGame.title}</h2>
-        {!selectedGame.participants.includes(currentUser.name) && 
-         selectedGame.status === 'waiting' && 
-         selectedGame.participants.length < selectedGame.maxParticipants && (
-          <button 
-            className="join-game-btn"
-            onClick={() => handleJoinGame(selectedGame.id)}
-          >
-            참여하기
+        <div className="game-detail-buttons">
+          <button onClick={onBack} className="back-btn">
+            ← 목록으로
           </button>
-        )}
+          {!selectedGame.participants.includes(currentUser.name) && 
+           selectedGame.status === 'waiting' && 
+           selectedGame.participants.length < selectedGame.maxParticipants && (
+            <button 
+              className="join-game-btn"
+              onClick={() => handleJoinGame(selectedGame.id)}
+            >
+              참여하기
+            </button>
+          )}
+        </div>
+        <h2>{selectedGame.title}</h2>
       </div>
 
       <div className="game-info-detail">

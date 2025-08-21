@@ -1,22 +1,19 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
+import Navigation from './Navigation'; // Re-use Navigation component
+import UserProfile from './UserProfile'; // Re-use UserProfile component
 
-const Sidebar = ({ items, isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose, navItems, currentPage, setCurrentPage, currentUser, onLogout, theme, toggleTheme }) => {
   return (
-    <div className={`sidebar-overlay ${isOpen ? 'open' : ''}`} onClick={onClose}>
-      <div className="sidebar-nav" onClick={(e) => e.stopPropagation()}>
-        {items.map(item => (
-          <NavLink
-            key={item.id}
-            to={item.path}
-            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-            onClick={onClose}
-          >
-            <span className="nav-icon">{item.icon}</span>
-            <span className="nav-label">{item.label}</span>
-          </NavLink>
-        ))}
+    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+      <div className="sidebar-header">
+        <button className="close-button pixel-button" onClick={onClose}>
+          CLOSE
+        </button>
+      </div>
+      <div className="sidebar-content">
+        <Navigation navItems={navItems} currentPage={currentPage} setCurrentPage={setCurrentPage} isSidebarNav={true} onClose={onClose} />
+        
       </div>
     </div>
   );

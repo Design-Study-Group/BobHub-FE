@@ -5,66 +5,48 @@
   margin-bottom: 24px;
 }
 
-.create-party-btn {
-  padding: 10px 20px;
-  background: linear-gradient(45deg, #ff6b6b, #ffa500);
-  color: white;
-  border: none;
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
-}
-
-.create-party-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
-}
-
-.tab-buttons {
-  display: flex;
-  gap: 8px;
-  padding: 4px;
-  border-radius: var(--radius);
-  width: fit-content;
-  flex-wrap: nowrap;
-}
-
-.tab-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background: none;
-  border: none;
-  border-radius: calc(var(--radius) - 4px);
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--foreground); /* Make inactive tabs more visible */
-  transition: all 0.2s ease;
-}
-
-.tab-btn.active {
-  background-color: var(--background);
-  color: var(--primary); /* Make active tab text primary color */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.tab-btn:hover:not(.active) {
+.party-list-header h2 {
+  font-size: 24px;
+  font-weight: 600;
   color: var(--foreground);
 }
 
+.create-party-btn {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: none;
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.create-party-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.category-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 4px;
+  background-color: var(--accent);
+  border-radius: var(--radius);
+  width: fit-content;
+}
+
 .category-tab {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
   background: none;
   border: none;
-  border-radius: calc(var(--radius) - 4px);
+  border-radius: var(--radius);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--muted-foreground);
   transition: all 0.2s ease;
@@ -73,7 +55,9 @@
 .category-tab.active {
   background-color: var(--background);
   color: var(--foreground);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 0.5px solid var(--primary);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .category-tab:hover:not(.active) {
@@ -109,7 +93,7 @@
 }
 
 .party-card-header h3 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   color: var(--foreground);
   margin: 0;
@@ -118,15 +102,15 @@
 
 .party-status {
   padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 11px;
+  border-radius: var(--radius);
+  font-size: 12px;
   font-weight: 500;
   margin-left: 8px;
 }
 
 .party-status.recruiting {
-  background: #e8f5e8;
-  color: #2e7d32;
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
 }
 
 .party-status.full {
@@ -136,7 +120,7 @@
 
 .party-description {
   color: var(--muted-foreground);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.5;
   margin-bottom: 16px;
 }
@@ -150,46 +134,40 @@
 .party-meta {
   display: flex;
   gap: 12px;
-  font-size: 12px;
-  color: var(--muted-foreground);
+  font-size: 16px;
+  color: var(--primary);
 }
 
 .party-creator {
-  font-size: 12px;
-  color: var(--primary);
+  font-size: 14px;
+  color: var(--muted-foreground);
   font-weight: 500;
-}
-
-.closed-party-card {
-  background-color: var(--muted); /* Use muted for dark background */
-  color: var(--muted-foreground); /* Use muted-foreground for text */
-  border-color: var(--border); /* Use border for border */
-  opacity: 0.7; /* Slightly faded */
-  pointer-events: none; /* Disable clicks */
-}
-
-.closed-party-card .party-card-header h3,
-.closed-party-card .party-status,
-.closed-party-card .party-description,
-.closed-party-card .party-meta,
-.closed-party-card .party-creator {
-  color: var(--muted-foreground); /* Ensure all text elements are readable */
-}
-
-.closed-party-card .party-status.recruiting {
-  background-color: var(--secondary); /* Adjust status background */
 }
 
 @media (max-width: 768px) {
   .party-list-header {
-    flex-direction: column;
-    gap: 16px;
-    align-items: stretch;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: 1rem;
   }
   
   .category-tabs {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-right: 8px;
+    margin-bottom: 0;
+  }
+  
+  .category-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-tab {
+    flex-shrink: 0;
   }
   
   .parties-grid {

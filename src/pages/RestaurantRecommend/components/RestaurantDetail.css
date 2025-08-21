@@ -3,6 +3,7 @@
   border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
+  margin: 0 10%;
 }
 
 .detail-header {
@@ -19,7 +20,7 @@
   border: none;
   color: var(--primary);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -57,7 +58,7 @@
 
 .info-section h3,
 .reviews-section h3 {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 600;
   color: var(--foreground);
   margin-bottom: 16px;
@@ -74,7 +75,7 @@
   justify-content: space-between;
   padding: 8px 0;
   border-bottom: 1px solid var(--border);
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .info-item span:first-child {
@@ -97,8 +98,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 12px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -108,7 +108,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background-color: var(--input-background);
-  font-size: 14px;
+  font-size: 16px;
   font-family: inherit;
 }
 
@@ -118,6 +118,12 @@
   margin-bottom: 12px;
 }
 
+.review-form-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .submit-review-btn {
   background-color: var(--primary);
   color: var(--primary-foreground);
@@ -125,7 +131,7 @@
   padding: 8px 16px;
   border-radius: var(--radius);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -147,7 +153,7 @@
   gap: 12px;
   align-items: center;
   margin-bottom: 8px;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .review-user {
@@ -166,7 +172,7 @@
 
 .review-comment {
   color: var(--foreground);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.5;
   margin: 0;
 }

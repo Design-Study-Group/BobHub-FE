@@ -1,7 +1,8 @@
 import React from 'react';
 import './CreatePartyForm.css';
 
-const CreatePartyForm = ({ newPartyData, setNewPartyData, handleCreateParty, setNewPartyForm }) => (
+const CreatePartyForm = ({ newPartyData, setNewPartyData, setNewPartyForm, handleCreateParty }) => {
+  return (
     <div className="create-party-overlay">
       <div className="create-party-form">
         <div className="form-header">
@@ -18,11 +19,11 @@ const CreatePartyForm = ({ newPartyData, setNewPartyData, handleCreateParty, set
           <div className="form-group">
             <label>파티 제목</label>
             <input
-              key="party-title-input"
               type="text"
               value={newPartyData.title}
               onChange={(e) => setNewPartyData({...newPartyData, title: e.target.value})}
               placeholder="ex) 점심 치킨 파티"
+              required
             />
           </div>
 
@@ -62,7 +63,7 @@ const CreatePartyForm = ({ newPartyData, setNewPartyData, handleCreateParty, set
             <div className="form-group">
               <label>시간</label>
               <input
-                type="datetime-local"
+                type="time"
                 value={newPartyData.time}
                 onChange={(e) => setNewPartyData({...newPartyData, time: e.target.value})}
                 required
@@ -93,5 +94,6 @@ const CreatePartyForm = ({ newPartyData, setNewPartyData, handleCreateParty, set
       </div>
     </div>
   );
+};
 
 export default CreatePartyForm;

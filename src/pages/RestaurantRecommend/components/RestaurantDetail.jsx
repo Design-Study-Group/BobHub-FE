@@ -3,6 +3,12 @@ import './RestaurantDetail.css';
 
 const RestaurantDetail = ({ restaurant, onBack }) => {
   const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
+  const [imageError, setImageError] = useState(false);
+  const defaultRestaurantImage = '/src/assets/icons/default-restaurant-image.png';
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   const handleSubmitReview = (e) => {
     e.preventDefault();
@@ -20,7 +26,11 @@ const RestaurantDetail = ({ restaurant, onBack }) => {
 
       <div className="detail-content">
         <div className="detail-image">
-          <img src={restaurant.image} alt={restaurant.name} />
+          <img 
+            src={imageError ? defaultRestaurantImage : restaurant.image}
+            alt={restaurant.name}
+            onError={handleImageError}
+          />
         </div>
 
         <div className="detail-info">
@@ -62,20 +72,6 @@ const RestaurantDetail = ({ restaurant, onBack }) => {
             <h3>리뷰 ({restaurant.reviews.length})</h3>
             
             <form className="review-form" onSubmit={handleSubmitReview}>
-              <div className="rating-input">
-                <label>평점:</label>
-                <select 
-                  value={newReview.rating}
-                  onChange={(e) => setNewReview({...newReview, rating: parseInt(e.target.value)})}
-                >
-                  {[5,4,3,2,1].map(rating => (
-                    <option key={rating} value={rating}>
-                      {'⭐'.repeat(rating)} ({rating}점)
-                    </option>
-                  ))}
-                </select>
-              </div>
-              
               <textarea
                 value={newReview.comment}
                 onChange={(e) => setNewReview({...newReview, comment: e.target.value})}
@@ -84,9 +80,24 @@ const RestaurantDetail = ({ restaurant, onBack }) => {
                 required
               />
               
-              <button type="submit" className="submit-review-btn">
-                리뷰 작성
-              </button>
+              <div className="review-form-controls">
+                <div className="rating-input">
+                  <label>평점:</label>
+                  <select 
+                    value={newReview.rating}
+                    onChange={(e) => setNewReview({...newReview, rating: parseInt(e.target.value)})}
+                  >
+                    {[5,4,3,2,1].map(rating => (
+                      <option key={rating} value={rating}>
+                        {'⭐'.repeat(rating)} ({rating}점)
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <button type="submit" className="submit-review-btn">
+                  리뷰 작성
+                </button>
+              </div>
             </form>
 
             <div className="reviews-list">

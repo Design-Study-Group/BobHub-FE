@@ -1,23 +1,21 @@
 import React from 'react';
 import './RecentActivities.css';
 
-const RecentActivities = ({ activities }) => {
+const RecentActivities = ({ recentActivities }) => {
   return (
-    <div className="recent-section">
-      <h2>최근 활동</h2>
-      <div className="recent-activities">
-        {activities.map((activity, index) => (
+    <div className="activities-section">
+      <h2 className="section-title soft-glow-text">RECENT ACTIVITIES</h2>
+      <div className="activities-container pixel-card">
+        {recentActivities.map((activity, index) => (
           <div key={index} className="activity-item">
-            <div className={`activity-icon ${activity.type}`}>
-              {activity.type === 'party' && '👥'}
-              {activity.type === 'betting' && '🎲'}
-              {activity.type === 'chatbot' && '🤖'}
-              {activity.type === 'restaurant' && '🍽️'}
+            <div className={`activity-icon ${activity.color}`}>
+              <div className="pixel-dot">█</div>
             </div>
             <div className="activity-content">
-              <p>{activity.message}</p>
+              <p className="activity-message">{activity.message}</p>
               <span className="activity-time">{activity.time}</span>
             </div>
+            <div className="activity-pulse"></div>
           </div>
         ))}
       </div>

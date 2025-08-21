@@ -1,11 +1,10 @@
 /* Game Detail */
 .game-detail {
-  background: rgba(255, 255, 255, 0.95);
+  background-color: var(--card);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 30px;
-  margin: 30px 150px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  margin: 20px 0;
 }
 
 .game-detail-header {
@@ -20,7 +19,7 @@
 .back-btn {
   padding: 8px 16px;
   border: 1px solid var(--border);
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   border-radius: var(--radius);
   cursor: pointer;
@@ -28,18 +27,19 @@
 }
 
 .back-btn:hover {
-  background: var(--accent);
+  background-color: var(--accent);
 }
 
 .game-detail-header h2 {
   margin: 0;
   flex: 1;
+  color: var(--foreground);
 }
 
 .join-game-btn {
   padding: 10px 20px;
-  background: linear-gradient(45deg, #4caf50, #8bc34a);
-  color: white;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
   border: none;
   border-radius: var(--radius);
   cursor: pointer;
@@ -47,8 +47,8 @@
 }
 
 .join-game-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .game-info-detail {
@@ -57,7 +57,7 @@
   gap: 16px;
   margin-bottom: 30px;
   padding: 20px;
-  background: var(--accent);
+  background-color: var(--accent);
   border-radius: var(--radius);
 }
 
@@ -81,9 +81,9 @@
 .game-play-area {
   margin-bottom: 30px;
   padding: 20px;
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  background-color: var(--card);
 }
 
 .game-play-area h3 {
@@ -97,19 +97,18 @@
 
 .play-btn {
   padding: 12px 24px;
-  background: linear-gradient(45deg, #ff6b6b, #ffa500);
-  color: white;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
   border: none;
   border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.2s ease;
   margin: 10px 0;
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
 }
 
 .play-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .number-input {
@@ -126,11 +125,12 @@
   border-radius: var(--radius);
   width: 150px;
   text-align: center;
+  background-color: var(--input-background);
 }
 
 .submit-btn {
   padding: 10px 20px;
-  background: var(--primary);
+  background-color: var(--primary);
   color: var(--primary-foreground);
   border: none;
   border-radius: var(--radius);
@@ -144,7 +144,7 @@
 
 .submissions-status {
   margin-top: 10px;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--muted-foreground);
 }
 
@@ -152,14 +152,14 @@
 .game-result, .completed-result {
   margin-top: 20px;
   padding: 20px;
-  background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+  background-color: var(--accent);
   border-radius: var(--radius);
-  border: 2px solid #4caf50;
+  border: 1px solid var(--border);
 }
 
 .game-result h4, .completed-result h4 {
   margin: 0 0 15px 0;
-  color: #2e7d32;
+  color: var(--foreground);
   text-align: center;
 }
 
@@ -174,15 +174,17 @@
 
 .participant-name {
   padding: 5px 10px;
-  background: white;
+  background-color: var(--background);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   margin: 2px;
   display: inline-block;
 }
 
 .participant-name.loser {
-  background: #ffebee;
-  color: #c62828;
+  background-color: var(--destructive);
+  color: var(--destructive-foreground);
+  border-color: var(--destructive);
   font-weight: 500;
 }
 
@@ -204,15 +206,15 @@
   justify-content: space-between;
   align-items: center;
   padding: 8px 12px;
-  background: white;
+  background-color: var(--background);
   border-radius: var(--radius);
   border: 1px solid var(--border);
 }
 
 .submission.loser {
-  background: #ffebee;
-  border-color: #f44336;
-  color: #c62828;
+  background-color: var(--destructive);
+  color: var(--destructive-foreground);
+  border-color: var(--destructive);
 }
 
 .distance {
@@ -224,37 +226,44 @@
   text-align: center;
   margin-top: 15px;
   padding: 10px;
-  background: #ffebee;
+  background-color: var(--destructive);
+  color: var(--destructive-foreground);
   border-radius: var(--radius);
-  color: #c62828;
   font-weight: 500;
 }
 
 /* Chat */
 .game-chat {
   border-top: 1px solid var(--border);
-  padding: 50px 25px 0px;
+  padding-top: 20px;
 }
 
 .game-chat h4 {
   margin: 0 0 15px 0;
+  color: var(--foreground);
 }
 
 .chat-messages {
   min-height: 100px;
   max-height: 200px;
   overflow-y: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.chat-messages::-webkit-scrollbar {
+  display: none;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 10px;
   margin-bottom: 10px;
-  background: var(--background);
+  background-color: var(--background);
 }
 
 .chat-message {
   margin-bottom: 8px;
   padding: 8px;
-  background: var(--accent);
+  background-color: var(--accent);
   border-radius: var(--radius);
 }
 
@@ -278,11 +287,12 @@
   padding: 8px 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  background-color: var(--input-background);
 }
 
 .chat-input button {
   padding: 8px 16px;
-  background: var(--primary);
+  background-color: var(--primary);
   color: var(--primary-foreground);
   border: none;
   border-radius: var(--radius);
@@ -292,13 +302,37 @@
 @media (max-width: 768px) {
   .game-detail {
     padding: 20px;
-    margin: 30px 150px;
+    margin: 10px 0;
   }
   
   .game-detail-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
+    flex-direction: column; /* Back to column */
+    align-items: stretch; /* Stretch items */
+    gap: 30px;
+  }
+
+  .game-detail-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .game-detail-header h2 {
+    width: 100%; /* Ensure it takes full width for centering */
+    text-align: center; /* Center align game name */
+    margin-top: 0; /* Remove margin-top */
+    flex-grow: 0; /* Reset flex-grow */
+  }
+
+  .back-btn {
+    width: fit-content; /* Prevent stretching */
+    margin-right: 0; /* Remove auto margin */
+  }
+
+  .join-game-btn {
+    width: fit-content; /* Prevent stretching */
+    margin-left: 0; /* Remove auto margin */
   }
   
   .game-info-detail {

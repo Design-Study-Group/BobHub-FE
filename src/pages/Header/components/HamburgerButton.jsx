@@ -1,14 +1,12 @@
 import React from 'react';
 import './HamburgerButton.css';
 
-const HamburgerButton = ({ onClick }) => {
+const HamburgerButton = ({ isOpen, onClick }) => {
   return (
-    <button
-      className="hamburger-button"
-      onClick={onClick}
-      aria-label="메뉴 열기"
-    >
-      ☰
+    <button className={`hamburger-button ${isOpen ? 'open' : ''}`} onClick={onClick}>
+      <div className="hamburger-line"></div>
+      <div className="hamburger-line"></div>
+      <div className="hamburger-line"></div>
     </button>
   );
 };

@@ -1,19 +1,24 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Navigation.css';
 
-const Navigation = ({ items }) => {
+const Navigation = ({ navItems, currentPage, isSidebarNav, onClose }) => {
   return (
-    <nav className="header-nav">
-      {items.map(item => (
-        <NavLink
+    <nav className={`header-nav ${isSidebarNav ? 'sidebar-nav' : ''}`}>
+      {navItems.map((item) => (
+        <Link
           key={item.id}
-          to={item.path}
-          className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+          to={`/${item.id}`}
+          className={`nav-item ${currentPage === item.id ? 'active' : ''}`}
+          onClick={onClose} // Close sidebar on navigation item click
         >
-          <span className="nav-icon">{item.icon}</span>
+          <div className="nav-pixel-icon">
+            {item.pixel.split('n').map((line, index) => (
+              <div key={index} className="pixel-line">{line}</div>
+            ))}
+          </div>
           <span className="nav-label">{item.label}</span>
-        </NavLink>
+        </Link> // Changed to Link
       ))}
     </nav>
   );

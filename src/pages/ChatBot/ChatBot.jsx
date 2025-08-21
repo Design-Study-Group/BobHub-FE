@@ -9,7 +9,7 @@ const ChatBot = () => {
     {
       id: 1,
       type: 'bot',
-      content: '안녕하세요! 🤖 메뉴 추천 AI입니다. 오늘 뭐 드시고 싶으신가요?',
+      content: '안녕하세요! 메뉴 추천 AI입니다. 오늘 뭐 드시고 싶으신가요?',
       timestamp: new Date()
     }
   ]);
@@ -89,24 +89,22 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="chatbot-container">
-      <div className="container">
-        <div className="chatbot-header">
-          <h1>🤖 AI 메뉴 추천</h1>
-          <p>무엇을 먹을지 고민될 때, AI가 맞춤 메뉴를 추천해드려요!</p>
-        </div>
+    <div className="chatbot">
+      <div className="chatbot-header">
+        <h1>AI 메뉴 추천</h1>
+        <p>무엇을 먹을지 고민될 때, AI가 맞춤 메뉴를 추천해드려요!</p>
+      </div>
 
-        <div className="chat-container">
-          <ChatMessages messages={messages} isTyping={isTyping} messagesEndRef={messagesEndRef} />
-          <QuickButtons buttons={quickButtons} onButtonClick={handleSendMessage} />
-          <MessageInput
-            inputMessage={inputMessage}
-            setInputMessage={setInputMessage}
-            onSendMessage={handleSendMessage}
-            onKeyPress={handleKeyPress}
-            isDisabled={!inputMessage.trim() || isTyping}
-          />
-        </div>
+      <div className="chat-container">
+        <ChatMessages messages={messages} isTyping={isTyping} messagesEndRef={messagesEndRef} />
+        <QuickButtons buttons={quickButtons} onButtonClick={handleSendMessage} />
+        <MessageInput
+          inputMessage={inputMessage}
+          setInputMessage={setInputMessage}
+          onSendMessage={handleSendMessage}
+          onKeyPress={handleKeyPress}
+          isDisabled={!inputMessage.trim() || isTyping}
+        />
       </div>
     </div>
   );

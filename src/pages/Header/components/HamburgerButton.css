@@ -1,17 +1,45 @@
 .hamburger-button {
-  display: none; /* Hidden by default on desktop */
+  display: none; /* Hidden by default, shown on mobile */
+  flex-direction: column;
+  justify-content: space-around;
+  width: 24px;
+  height: 24px;
   background: transparent;
   border: none;
-  font-size: 24px;
   cursor: pointer;
-  color: var(--foreground);
-  padding: 8px;
-  position: relative; /* Ensure z-index works */
-  z-index: 9999; /* Force it to be on top */
+  padding: 0;
+  z-index: 1001; /* Above header content */
+}
+
+.hamburger-button:focus {
+  outline: none;
+}
+
+.hamburger-line {
+  width: 24px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 1px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+.hamburger-button.open .hamburger-line:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.hamburger-button.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.hamburger-button.open .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg);
 }
 
 @media (max-width: 768px) {
   .hamburger-button {
-    display: block; /* Show hamburger button on mobile */
+    display: flex;
   }
 }

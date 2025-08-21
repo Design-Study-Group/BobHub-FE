@@ -1,42 +1,50 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './UserProfile.css';
+import defaultProfileImage from '../../../assets/icons/default-profile.png';
 
 const UserProfile = ({ currentUser, onLogout }) => {
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  const profileMenuRef = useRef(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [imageError, setImageError] = useState(false); // New state for image error
+  const navigate = useNavigate();
 
-  // Close profile menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
-        setIsProfileMenuOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleMyPageClick = () => {
+    navigate('/mypage');
+    setIsDropdownOpen(false);
+  };
+
+  const handleLogoutClick = () => {
+    onLogout();
+    setIsDropdownOpen(false);
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   return (
-    <div className="user-profile-menu" ref={profileMenuRef}>
-      <button className="user-profile-button" onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}>
+    <div className="user-profile-container">
+      <div className="user-info-clickable" onClick={toggleDropdown}>
         <img
-          src={currentUser?.profileImage || '/api/placeholder/32/32'}
+          src={imageError ? defaultProfileImage : (currentUser?.profileImage || defaultProfileImage)}
           alt="프로필"
           className="user-avatar"
+          onError={handleImageError}
         />
-        <span className="user-name">{currentUser?.name}</span>
-      </button>
+        <span className="user-name">{currentUser?.name || 'PLAYER'}</span>
+      </div>
 
-      {isProfileMenuOpen && (
-        <div className="profile-dropdown">
-          <Link to="/mypage" className="dropdown-item" onClick={() => setIsProfileMenuOpen(false)}>
-            마이페이지
-          </Link>
-          <button className="dropdown-item" onClick={() => { onLogout(); setIsProfileMenuOpen(false); }}>
-            로그아웃
+      {isDropdownOpen && (
+        <div className="user-dropdown">
+          <button className="dropdown-item pixel-button" onClick={handleMyPageClick}>
+            MY PAGE
+          </button>
+          <button className="dropdown-item pixel-button danger" onClick={handleLogoutClick}>
+            LOGOUT
           </button>
         </div>
       )}

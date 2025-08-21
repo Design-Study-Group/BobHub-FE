@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './RestaurantCard.css';
 
 const RestaurantCard = ({ restaurant, onClick }) => {
+  const [imageError, setImageError] = useState(false);
+  const defaultRestaurantImage = '/src/assets/icons/default-restaurant-image.png';
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <div className="restaurant-card" onClick={() => onClick(restaurant)}>
       <div className="restaurant-image">
-        <img src={restaurant.image} alt={restaurant.name} />
+        <img 
+          src={imageError ? defaultRestaurantImage : restaurant.image}
+          alt={restaurant.name}
+          onError={handleImageError}
+        />
         <div className="rating-badge">
           ⭐ {restaurant.rating}
         </div>

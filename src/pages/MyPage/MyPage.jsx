@@ -25,7 +25,6 @@ const MyPage = ({ currentUser }) => {
   return (
     <div className="mypage-container">
       <div className="container">
-        <h1>마이페이지</h1>
         <ProfileSection userProfile={userProfile} />
         <ActivitySection activityHistory={activityHistory} />
       </div>

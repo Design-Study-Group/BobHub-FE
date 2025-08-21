@@ -25,7 +25,7 @@ const AddRestaurantForm = ({
     <div className="add-restaurant-overlay">
       <div className="add-restaurant-form" ref={formRef}>
         <div className="form-header">
-          <h3>새 맛집 추가하기</h3>
+          <h3>맛집 등록하기</h3>
           <button 
             className="close-btn"
             onClick={() => setShowAddForm(false)}
@@ -130,6 +130,7 @@ const AddRestaurantForm = ({
                 추가
               </button>
             </div>
+            <p className="tag-help">예: 가성비, 깔끔한, 혼밥가능, 데이트, 단체모임</p>
             <div className="tags-display">
               {newRestaurant.tags.map((tag, index) => (
                 <span key={index} className="tag-item">
@@ -144,7 +145,6 @@ const AddRestaurantForm = ({
                 </span>
               ))}
             </div>
-            <p className="tag-help">예: 가성비, 깔끔한, 혼밥가능, 데이트, 단체모임</p>
           </div>
 
           <div className="form-actions">

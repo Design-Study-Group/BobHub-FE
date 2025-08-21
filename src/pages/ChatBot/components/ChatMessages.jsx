@@ -2,9 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import './ChatMessages.css';
 
 const ChatMessages = ({ messages, isTyping, messagesEndRef }) => {
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isTyping]);
+  
 
   return (
     <div className="messages-container">

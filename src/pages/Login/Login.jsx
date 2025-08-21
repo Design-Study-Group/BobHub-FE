@@ -1,22 +1,31 @@
 import React, { useState } from 'react';
 import './Login.css';
 
-const Login = ({ onLogin }) => {
+const Login = ({ onLogin, theme, toggleTheme }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleGoogleLogin = () => {
+  const features = [
+    { icon: '🤖', text: '챗봇이 추천해주는 메뉴' },
+    { icon: '👥', text: '식사 파티원 모집하기' },
+    { icon: '🎮', text: '재밌는 내기' },
+    { icon: '🗺️', text: '강의장 주변 맛집 찾아보기' }
+  ];
+
+  const handleGoogleLogin = async () => {
     setIsLoading(true);
     
-    // 구글 로그인 시뮬레이션
+    // 실제 구글 로그인 구현 시 아래 코드로 대체
+    // const provider = new GoogleAuthProvider();
+    // const result = await signInWithPopup(auth, provider);
+    
+    // 임시 더미 로그인
     setTimeout(() => {
-      const mockUser = {
-        id: '12345',
+      const userData = {
         name: '김개발',
-        email: 'kim.dev@bootcamp.com',
-        profileImage: '/api/placeholder/40/40'
+        email: 'java@fastcampus.dev',
+        avatar: '👤'
       };
-      
-      onLogin(mockUser);
+      onLogin(userData);
       setIsLoading(false);
     }, 1500);
   };
@@ -25,7 +34,7 @@ const Login = ({ onLogin }) => {
     <div className="login-container">
       <div className="login-card">
         <div className="login-header">
-          <h1 className="login-title">BobHub</h1>
+          <h1 className="login-title gradient-text">BOBHUB</h1>
           <p className="login-subtitle">
             함께 먹고, 함께 성장하는 개발자들의 공간
           </p>
@@ -33,31 +42,24 @@ const Login = ({ onLogin }) => {
 
         <div className="login-content">
           <div className="feature-list">
-            <div className="feature-item">
-              <span className="feature-icon">🤖</span>
-              <span>AI 챗봇 메뉴 추천</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">👥</span>
-              <span>파티원 모집 채팅</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">🎲</span>
-              <span>재미있는 내기 게임</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">🍽️</span>
-              <span>주변 맛집 추천</span>
-            </div>
+            {features.map((feature, index) => (
+              <div key={index} className="feature-item">
+                <span className="feature-icon">{feature.icon}</span>
+                <span>{feature.text}</span>
+              </div>
+            ))}
           </div>
 
           <button 
-            className="google-login-btn" 
+            className="google-login-btn"
             onClick={handleGoogleLogin}
             disabled={isLoading}
           >
             {isLoading ? (
-              <div className="loading-spinner"></div>
+              <>
+                <div className="loading-spinner"></div>
+                CONNECTING...
+              </>
             ) : (
               <>
                 <svg className="google-icon" viewBox="0 0 24 24">
@@ -66,15 +68,14 @@ const Login = ({ onLogin }) => {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                Google로 로그인
+                CONTINUE WITH GOOGLE
               </>
             )}
           </button>
-
           <p className="login-note">
             * 이 서비스는 데모용으로 실제 구글 로그인이 아닙니다.
           </p>
-        </div>
+          </div>
       </div>
     </div>
   );

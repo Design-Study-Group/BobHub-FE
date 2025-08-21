@@ -1,17 +1,16 @@
 .restaurant-card {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: var(--card);
+  border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 }
 
 .restaurant-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary);
 }
 
 .restaurant-image {
@@ -39,7 +38,7 @@
   color: white;
   padding: 6px 10px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
 }
 
@@ -56,11 +55,11 @@
 }
 
 .new-badge {
-  background: linear-gradient(45deg, #ff6b6b, #ffa500);
-  color: white;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
   padding: 2px 6px;
   border-radius: 8px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   animation: pulse 2s infinite;
 }
@@ -75,7 +74,7 @@
   display: flex;
   gap: 16px;
   margin-bottom: 12px;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted-foreground);
 }
 
@@ -91,13 +90,13 @@
   color: var(--accent-foreground);
   padding: 4px 8px;
   border-radius: 12px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
 }
 
 .description {
   color: var(--muted-foreground);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.5;
   margin: 0 0 8px 0;
 }

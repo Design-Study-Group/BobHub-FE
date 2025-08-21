@@ -3,6 +3,7 @@ import CreateGameForm from './components/CreateGameForm';
 import GameCard from './components/GameCard';
 import GameDetail from './components/GameDetail';
 import './BettingParty.css';
+import './components/CreateGameForm.css';
 
 const BettingParty = ({ currentUser }) => {
   const [activeTab, setActiveTab] = useState('active');
@@ -265,8 +266,8 @@ const BettingParty = ({ currentUser }) => {
     <div className="betting-party">
       <div className="container">
         <div className="betting-header">
-          <h1>🎲 랜덤 게임</h1>
-          <p>BobHub의 재미있는 랜덤 게임으로 공정하게 패자를 정해보세요!</p>
+          <h1>랜덤 게임</h1>
+          <p>재미있는 랜덤 게임으로 공정하게 패자를 정해보세요!</p>
         </div>
 
         <div className="betting-controls">
@@ -275,13 +276,13 @@ const BettingParty = ({ currentUser }) => {
               className={`tab-btn ${activeTab === 'active' ? 'active' : ''}`}
               onClick={() => setActiveTab('active')}
             >
-              진행중인 게임
+              진행중
             </button>
             <button 
               className={`tab-btn ${activeTab === 'completed' ? 'active' : ''}`}
               onClick={() => setActiveTab('completed')}
             >
-              완료된 게임
+              지난 게임
             </button>
           </div>
           

@@ -3,10 +3,10 @@ import './QuickStats.css';
 
 const QuickStats = ({ stats }) => {
   return (
-    <div className="quick-stats">
+    <div className="hero-stats">
       {stats.map((stat, index) => (
-        <div key={index} className="stat-item">
-          <div className="stat-number">{stat.number}</div>
+        <div key={index} className={`stat-item ${stat.color}`}>
+          <div className="stat-number">{stat.value}</div>
           <div className="stat-label">{stat.label}</div>
         </div>
       ))}

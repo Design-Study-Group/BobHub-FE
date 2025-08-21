@@ -1,9 +1,17 @@
-/* 파티 채팅 */
 .party-chat {
   background-color: var(--card);
   border: 1px solid var(--border);
   border-radius: 16px;
-  height: 600px;
+  max-height: 1000px;
+  width: 70%;
+  margin: auto;
+  overflow-y: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.party-chat::-webkit-scrollbar {
+  display: none;
   display: flex;
   flex-direction: column;
 }
@@ -23,7 +31,7 @@
   border: none;
   color: var(--primary);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -39,7 +47,7 @@
 }
 
 .chat-info span {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted-foreground);
 }
 
@@ -58,6 +66,12 @@
   flex: 1;
   padding: 20px 24px;
   overflow-y: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.chat-messages::-webkit-scrollbar {
+  display: none;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -78,7 +92,7 @@
   display: flex;
   gap: 8px;
   margin-bottom: 4px;
-  font-size: 11px;
+  font-size: 16px;
   color: var(--muted-foreground);
 }
 

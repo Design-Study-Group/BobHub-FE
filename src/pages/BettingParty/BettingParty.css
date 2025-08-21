@@ -1,6 +1,5 @@
 .betting-party {
-  padding: 40px;
-  min-height: 100vh;
+  min-height: calc(100vh - 80px);
 }
 
 .container {
@@ -11,7 +10,7 @@
 
 .betting-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 
 .betting-header h1 {
@@ -22,10 +21,8 @@
 }
 
 .betting-header p {
-  font-size: 1.1rem;
+  font-size: 16px;
   color: var(--muted-foreground);
-  max-width: 600px;
-  margin: 0 auto;
 }
 
 .betting-controls {
@@ -33,6 +30,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  padding: 0;
   flex-wrap: wrap;
   gap: 20px;
 }
@@ -44,39 +42,40 @@
 
 .tab-btn {
   padding: 10px 20px;
-  border: 2px solid var(--border); /* Unified */
-  background: var(--card); /* Unified */
-  color: var(--foreground); /* Unified */
+  border: none;
+  background: none;
+  color: var(--muted-foreground);
   border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.2s ease;
-  backdrop-filter: blur(10px);
 }
 
 .tab-btn:hover {
-  background: var(--accent); /* Unified */
+  background-color: var(--accent);
+  color: var(--accent-foreground);
 }
 
 .tab-btn.active {
-  background: var(--primary); /* Unified */
-  color: var(--primary-foreground); /* Unified */
-  border-color: var(--primary); /* Unified */
+  background-color: var(--background);
+  color: var(--foreground);
+  border: 0.5px solid var(--primary);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .create-game-btn {
   padding: 10px 20px;
-  background: linear-gradient(45deg, #ff6b6b, #ffa500); /* Keeping original gradient for now */
-  color: white;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
   border: none;
   border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
 }
 
 .create-game-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .games-grid {
@@ -87,7 +86,7 @@
 
 @media (max-width: 768px) {
   .betting-party {
-    padding: 24px;
+    padding: 20px 0;
   }
   
   .container {
@@ -95,8 +94,9 @@
   }
   
   .betting-controls {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
   
   .tab-buttons {
@@ -106,4 +106,11 @@
   .games-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.betting-party-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }

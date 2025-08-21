@@ -1,24 +1,24 @@
 import React from 'react';
 import './PartyChatView.css';
 
-const PartyChatView = ({ party, currentUser, onBack, onJoinParty }) => {
+const PartyChatView = ({ selectedParty, setSelectedParty, handleJoinParty, currentUser }) => {
   return (
     <div className="party-chat">
-      <div className="chat-header">
-        <button
+      <div className="chat-header"> {/* Put back */}
+        <button 
           className="back-btn"
-          onClick={onBack}
+          onClick={() => setSelectedParty(null)}
         >
           ← 목록으로
         </button>
         <div className="chat-info">
-          <h3>{party.title}</h3>
-          <span>{party.members.length}/{party.maxMembers}명 참여중</span>
+          <h3>{selectedParty.title}</h3>
+          <span>{selectedParty.members.length}/{selectedParty.maxMembers}명 참여중</span>
         </div>
-        {!party.members.includes(currentUser.name) && (
-          <button
+        {!selectedParty.members.includes(currentUser.name) && (
+          <button 
             className="join-btn"
-            onClick={() => onJoinParty(party.id)}
+            onClick={() => handleJoinParty(selectedParty.id)}
           >
             참여하기
           </button>
@@ -26,9 +26,9 @@ const PartyChatView = ({ party, currentUser, onBack, onJoinParty }) => {
       </div>
 
       <div className="chat-messages">
-        {party.messages.map(message => (
-          <div
-            key={message.id}
+        {selectedParty.messages.map(message => (
+          <div 
+            key={message.id} 
             className={`chat-message ${message.user === currentUser.name ? 'own' : ''}`}
           >
             <div className="message-info">
@@ -41,8 +41,8 @@ const PartyChatView = ({ party, currentUser, onBack, onJoinParty }) => {
       </div>
 
       <div className="chat-input">
-        <input
-          type="text"
+        <input 
+          type="text" 
           placeholder="메시지를 입력하세요..."
           className="message-input"
         />

@@ -1,97 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@font-face {
+     font-family: 'DungGeunMo';
+     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
+     font-weight: normal;
+     font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ycomputer-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/Ycomputer-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'YUniverse-B';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_yuniverse@1.0/YUniverse-B.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --font-size: 16px;
-
-  --background: #f8f9fa;
-  --foreground: #343a40;
+  --font-size-base: 16px; /* 기본 폰트 크기 */
+  --font-size-mobile: 14px; /* 모바일 폰트 크기 */
+  --pixel-font: 'Press Start 2P', monospace;
+  
+  /* 라이트 모드 - 밝고 깔끔한 픽셀 아트 색상 팔레트 */
+  --background: #fafafa;
+  --foreground: #1a1a2e;
   --card: #ffffff;
-  --card-foreground: #343a40;
-
+  --card-foreground: #1a1a2e;
   --popover: #ffffff;
-  --popover-foreground: #343a40;
-
-  /* New, more sophisticated color palette */
-  --primary: #e27726;
+  --popover-foreground: #1a1a2e;
+  
+  /* 메인 컬러 - 라이트 모드용 부드러운 색상 */
+  --primary: #7c3aed;
   --primary-foreground: #ffffff;
-
-  --secondary: #a8f690; /* A fresh, light teal */
-  --secondary-foreground: #343a40; /* Dark text for contrast on light secondary */
-
-  --muted: #e0e0e0; /* Slightly darker muted for better contrast */
-  --muted-foreground: #757575; /* Darker muted text */
-
-  --accent: #ececec; /* A warm, inviting coral/orange */
-  --accent-foreground: #000000;
-
-  --destructive: #e74c3c; /* A standard, clear red */
+  --secondary: #db2777;
+  --secondary-foreground: #ffffff;
+  --tertiary: #0891b2;
+  --tertiary-foreground: #ffffff;
+  --danger: #dc2626;
+  --danger-foreground: #ffffff;
+  
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #f8fafc;
+  --accent-foreground: #7c3aed;
+  --destructive: #dc2626;
   --destructive-foreground: #ffffff;
-
-  --border: rgba(0, 0, 0, 0.15); /* Slightly more visible border */
+  
+  --border: #d1d5db;
   --input: #ffffff;
-  --input-background: #f3f3f5;
-  --switch-background: #bdbdbd; /* Darker switch background */
-
-  --font-weight-medium: 500;
+  --input-background: #f9fafb;
+  --switch-background: #e5e7eb;
+  
+  --font-weight-medium: 400;
   --font-weight-normal: 400;
-  --ring: rgba(74, 144, 226, 0.5); /* Ring based on new primary */
+  --ring: #7c3aed;
+  
+  /* 픽셀 아트 스타일 radius */
+  --radius: 6px;
+  --pixel-border: 2px;
 
-  /* Chart colors (keeping original for now) */
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --neon-green: #6ee7b7;
+  --neon-blue: #7dd3fc;
+  --neon-pink: #f9a8d4;
+  --neon-yellow: #fde047;
 
-  --radius: 0.5rem;
-
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #030213;
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-
-  --page-background-gradient: linear-gradient(135deg, #6a82fb 0%, #fc5c7d 100%); /* A new, more appealing gradient */
+  /* 라이트 모드용 부드러운 색상들 */
+  --soft-purple: #7c3aed;
+  --soft-pink: #db2777;
+  --soft-blue: #0891b2;
+  --soft-cyan: #0891b2;
+  --soft-violet: #8b5cf6;
+  --soft-rose: #e11d48;
+  
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1a1a2e;
+  --sidebar-primary: #7c3aed;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f8fafc;
+  --sidebar-accent-foreground: #7c3aed;
+  --sidebar-border: #d1d5db;
+  --sidebar-ring: #7c3aed;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  /* 다크 모드 - 부드러운 사이버펑크 색상 팔레트 */
+  --background: #0f0f23;
+  --foreground: #e2e8f0;
+  --card: #1a1a2e;
+  --card-foreground: #e2e8f0;
+  --popover: #1a1a2e;
+  --popover-foreground: #e2e8f0;
+  
+  --primary: #8b5cf6;
+  --primary-foreground: #ffffff;
+  --secondary: #ec4899;
+  --secondary-foreground: #ffffff;
+  --tertiary: #06b6d4;
+  --tertiary-foreground: #ffffff;
+  --danger: #ef4444;
+  --danger-foreground: #ffffff;
+  
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  --accent: #1e1b4b;
+  --accent-foreground: #c7d2fe;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  
+  --border: #374151;
+  --input: #1a1a2e;
+  --input-background: #0f0f23;
+  --switch-background: #374151;
+  --ring: #8b5cf6;
+
+  --neon-green: #39ff14;
+  --neon-blue: #1e90ff;
+  --neon-pink: #ff00ff;
+  --neon-yellow: #ffff00;
+  
+  /* 다크 모드용 부드러운 레트로 색상들 */
+  --soft-purple: #8b5cf6;
+  --soft-pink: #ec4899;
+  --soft-blue: #06b6d4;
+  --soft-cyan: #22d3ee;
+  --soft-violet: #a855f7;
+  --soft-rose: #f43f5e;
+  
+  --sidebar: #1a1a2e;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-primary: #8b5cf6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1e1b4b;
+  --sidebar-accent-foreground: #c7d2fe;
+  --sidebar-border: #374151;
+  --sidebar-ring: #8b5cf6;
 }
 
 @theme inline {
@@ -116,15 +165,10 @@
   --color-input-background: var(--input-background);
   --color-switch-background: var(--switch-background);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -138,68 +182,403 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+body {
+    @apply bg-background text-foreground;
+    font-family: var(--pixel-font);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  body {
-    @apply bg-background text-foreground;
+  /* 라이트 모드 배경 */
+  body:not(.dark) {
+    background: 
+      linear-gradient(135deg, #fafafa 0%, #f3f4f6 25%, #e5e7eb 50%, #d1d5db 75%, #f9fafb 100%);
+    background-attachment: fixed;
+  }
+
+  body:not(.dark)::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 20% 20%, rgba(124, 58, 237, 0.08) 1px, transparent 1px),
+      radial-gradient(circle at 80% 80%, rgba(219, 39, 119, 0.06) 1px, transparent 1px),
+      radial-gradient(circle at 40% 60%, rgba(8, 145, 178, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px, 60px 60px, 80px 80px;
+    pointer-events: none;
+    animation: gentle-float 20s ease-in-out infinite;
+  }
+
+  /* 다크 모드 배경 */
+  body.dark {
+    background: 
+      linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #1e1b4b 100%);
+    background-attachment: fixed;
+  }
+
+  body.dark::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.1) 1px, transparent 1px),
+      radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.08) 1px, transparent 1px),
+      radial-gradient(circle at 40% 60%, rgba(6, 182, 212, 0.06) 1px, transparent 1px);
+    background-size: 30px 30px, 50px 50px, 80px 80px;
+    pointer-events: none;
+    animation: gentle-float 15s ease-in-out infinite;
+  }
+
+  @keyframes gentle-float {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(10px, -10px); }
+    66% { transform: translate(-5px, 5px); }
   }
 }
 
 /**
- * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ * 픽셀 아트 스타일 타이포그래피
  */
 @layer base {
   :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
     h1 {
-      font-size: var(--text-2xl);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
+      font-size: 1.25rem; /* 20px */
+      font-weight: var(--font-weight-normal);
+      line-height: 1.4;
+      font-family: var(--pixel-font);
+      text-shadow: 1px 1px 0px var(--primary);
+      letter-spacing: 2px;
+}
 
     h2 {
-      font-size: var(--text-xl);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
+      font-size: 1rem; /* 16px */
+      font-weight: var(--font-weight-normal);
+      line-height: 1.4;
+      font-family: var(--pixel-font);
+      text-shadow: 1px 1px 0px var(--secondary);
+      letter-spacing: 1px;
     }
 
     h3 {
-      font-size: var(--text-lg);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
+      font-size: 0.875rem; /* 14px */
+      font-weight: var(--font-weight-normal);
+      line-height: 1.4;
+      font-family: var(--pixel-font);
+      letter-spacing: 1px;
     }
 
     h4 {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
+      font-size: 0.75rem; /* 12px */
+      font-weight: var(--font-weight-normal);
+      line-height: 1.4;
+      font-family: var(--pixel-font);
+      letter-spacing: 1px;
     }
 
     p {
-      font-size: var(--text-base);
+      font-size: 0.625rem; /* 10px */
       font-weight: var(--font-weight-normal);
-      line-height: 1.5;
+      line-height: 1.6;
+      font-family: var(--pixel-font);
+      letter-spacing: 0.5px;
     }
 
     label {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
+      font-size: 0.625rem; /* 10px */
+      font-weight: var(--font-weight-normal);
+      line-height: 1.4;
+      font-family: var(--pixel-font);
+      letter-spacing: 0.5px;
+}
 
-    button {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
+button {
+      font-size: 0.625rem; /* 10px */
+      font-weight: var(--font-weight-normal);
+      line-height: 1.4;
+      font-family: var(--pixel-font);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+}
 
     input {
-      font-size: var(--text-base);
+      font-size: 0.625rem; /* 10px */
       font-weight: var(--font-weight-normal);
-      line-height: 1.5;
-    }
+      line-height: 1.4;
+      font-family: var(--pixel-font);
+      letter-spacing: 0.5px;
+}
   }
 }
 
+/* 부드러운 픽셀 아트 스타일 컴포넌트 */
+.pixel-button {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border: var(--pixel-border) solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 16px;
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  box-shadow: 
+    inset -2px -2px 0px rgba(0, 0, 0, 0.15),
+    inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+}
+
+.dark .pixel-button {
+  box-shadow: 
+    inset -2px -2px 0px rgba(0, 0, 0, 0.3),
+    inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+}
+
+.pixel-button:hover {
+  background: var(--soft-violet);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 8px rgba(124, 58, 237, 0.3),
+    inset -2px -2px 0px rgba(0, 0, 0, 0.15),
+    inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+}
+
+.dark .pixel-button:hover {
+  box-shadow: 
+    0 4px 8px rgba(139, 92, 246, 0.3),
+    inset -2px -2px 0px rgba(0, 0, 0, 0.3),
+    inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+}
+
+.pixel-button:active {
+  transform: translateY(0);
+  box-shadow: 
+    inset 2px 2px 0px rgba(0, 0, 0, 0.15),
+    inset -2px -2px 0px rgba(255, 255, 255, 0.2);
+}
+
+.dark .pixel-button:active {
+  box-shadow: 
+    inset 2px 2px 0px rgba(0, 0, 0, 0.3),
+    inset -2px -2px 0px rgba(255, 255, 255, 0.2);
+}
+
+.pixel-button.secondary {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.pixel-button.secondary:hover {
+  background: var(--soft-rose);
+  box-shadow: 0 4px 8px rgba(219, 39, 119, 0.3);
+}
+
+.dark .pixel-button.secondary:hover {
+  box-shadow: 0 4px 8px rgba(236, 72, 153, 0.3);
+}
+
+.pixel-button.danger {
+  background: var(--danger);
+  color: var(--danger-foreground);
+}
+
+.pixel-button.danger:hover {
+  background: #f87171;
+  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+}
+
+.pixel-card {
+  background: var(--card);
+  border: var(--pixel-border) solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  position: relative;
+  box-shadow: 
+    inset -2px -2px 0px rgba(0, 0, 0, 0.1),
+    inset 2px 2px 0px rgba(255, 255, 255, 0.1);
+}
+
+.dark .pixel-card {
+  box-shadow: 
+    inset -2px -2px 0px rgba(0, 0, 0, 0.3),
+    inset 2px 2px 0px rgba(255, 255, 255, 0.1);
+}
+
+.pixel-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    var(--soft-blue) 0%, 
+    var(--soft-purple) 33%, 
+    var(--soft-pink) 66%, 
+    var(--soft-violet) 100%
+  );
+}
+
+.pixel-input {
+  background: var(--input-background);
+  border: var(--pixel-border) solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  font-family: var(--pixel-font);
+  font-size: 10px;
+  color: var(--foreground);
+  letter-spacing: 0.5px;
+  box-shadow: 
+    inset 2px 2px 0px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 0px rgba(255, 255, 255, 0.1);
+}
+
+.dark .pixel-input {
+  box-shadow: 
+    inset 2px 2px 0px rgba(0, 0, 0, 0.3),
+    inset -2px -2px 0px rgba(255, 255, 255, 0.1);
+}
+
+.pixel-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 
+    0 0 8px rgba(124, 58, 237, 0.4),
+    inset 2px 2px 0px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 0px rgba(255, 255, 255, 0.1);
+}
+
+.dark .pixel-input:focus {
+  box-shadow: 
+    0 0 8px rgba(139, 92, 246, 0.4),
+    inset 2px 2px 0px rgba(0, 0, 0, 0.3),
+    inset -2px -2px 0px rgba(255, 255, 255, 0.1);
+}
+
+.soft-glow-text {
+  color: var(--primary);
+  text-shadow: 
+    0 0 4px rgba(124, 58, 237, 0.4),
+    0 0 8px rgba(124, 58, 237, 0.2);
+}
+
+.dark .soft-glow-text {
+  text-shadow: 
+    0 0 4px rgba(139, 92, 246, 0.6),
+    0 0 8px rgba(139, 92, 246, 0.4);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--soft-purple), var(--soft-pink));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gentle-pulse {
+  animation: gentle-pulse 3s ease-in-out infinite;
+}
+
+@keyframes gentle-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.02); }
+}
+
+.subtle-glitch {
+  position: relative;
+}
+
+.subtle-glitch::before,
+.subtle-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+
+.subtle-glitch::before {
+  animation: subtle-glitch-1 4s infinite;
+  color: var(--soft-pink);
+  z-index: -1;
+}
+
+.subtle-glitch::after {
+  animation: subtle-glitch-2 4s infinite;
+  color: var(--soft-blue);
+  z-index: -2;
+}
+
+@keyframes subtle-glitch-1 {
+  0%, 90%, 100% { transform: translate(0); opacity: 0; }
+  91%, 94% { transform: translate(1px, 0); opacity: 0.1; }
+}
+
+@keyframes subtle-glitch-2 {
+  0%, 90%, 100% { transform: translate(0); opacity: 0; }
+  92%, 95% { transform: translate(-1px, 0); opacity: 0.1; }
+}
+
+/* 테마 토글 버튼 */
+.theme-toggle {
+  background: var(--card);
+  border: var(--pixel-border) solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+}
+
+.theme-toggle:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+}
+
+.theme-icon {
+  font-size: 14px;
+  color: var(--foreground);
+}
+
 html {
-  font-size: var(--font-size);
+  font-size: clamp(var(--font-size-mobile), 1vw + 0.5rem, var(--font-size-base));
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid var(--border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.4);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
 }

@@ -1,39 +1,111 @@
-.dashboard {
-  padding: 40px;
+.pixel-dashboard {
   min-height: 100vh;
-  background-color: var(--background);
-  color: var(--foreground);
+  position: relative;
 }
 
-.dashboard-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.dashboard-header h1 {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--foreground);
-  margin-bottom: 8px;
-}
-
-.dashboard-header p {
-  font-size: 1.1rem;
-  color: var(--muted-foreground);
-  max-width: 600px;
+.container {
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
 }
 
+/* Hero Section */
+.dashboard-hero {
+  text-align: center;
+  margin-bottom: 60px;
+  padding: 40px 0;
+  background: var(--card);
+  border: var(--pixel-border) solid var(--border);
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 20px rgba(139, 92, 246, 0.15),
+    inset 0 0 20px rgba(139, 92, 246, 0.05);
+}
+
+.dashboard-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    var(--soft-blue) 0%, 
+    var(--soft-purple) 25%, 
+    var(--soft-pink) 50%, 
+    var(--soft-violet) 75%, 
+    var(--soft-cyan) 100%
+  );
+  animation: gentle-rainbow 4s linear infinite;
+}
+
+ @keyframes gentle-rainbow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-title {
+  font-size: 32px;
+  margin-bottom: 16px;
+  color: var(--primary);
+  position: relative;
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  color: var(--muted-foreground);
+  margin-bottom: 24px;
+  letter-spacing: 2px;
+}
+
+.hero-pixel-art {
+  margin: 20px 0;
+}
+
+.pixel-food-icons {
+  font-size: 20px;
+  letter-spacing: 8px;
+  animation: gentle-float 4s ease-in-out infinite;
+}
+
+ @keyframes gentle-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
-  .dashboard {
-    padding: 24px 0;
+  .pixel-dashboard {
+    padding: 0 0 20px;
+  }
+
+  .dashboard-hero {
+    padding: 30px 20px;
+    margin-bottom: 40px;
   }
   
-  .dashboard-header h1 {
-    font-size: 2rem; /* Adjusted for consistency */
+  .hero-title {
+    font-size: 24px;
   }
   
-  .dashboard-header p {
-    font-size: 1rem; /* Adjusted for consistency */
+  .hero-subtitle {
+    font-size: 12px;
   }
+  
+  .pixel-food-icons {
+    font-size: 20px;
+    letter-spacing: 4px;
+  }
+}
+
+@media (max-width: 480px) {
 }

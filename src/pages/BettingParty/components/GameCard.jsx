@@ -20,11 +20,7 @@ const GameCard = ({ game, punishments, onSelectGame }) => (
       <div className="punishment-info">
         벌칙: {punishments.find(p => p.id === game.punishment.type)?.label}
         {punishments.find(p => p.id === game.punishment.type)?.icon && (
-          <img
-            src={punishments.find(p => p.id === game.punishment.type).icon}
-            alt={punishments.find(p => p.id === game.punishment.type).label}
-            className="punishment-icon" // Add a class for styling
-          />
+          <span>{punishments.find(p => p.id === game.punishment.type).icon}</span>
         )}
       </div>
       <div className="game-creator">만든이: {game.creator}</div>

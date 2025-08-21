@@ -1,14 +1,14 @@
-.header {
+.main-header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background-color: var(--background);
-  border-bottom: 1px solid var(--border);
+  background: var(--card);
+  border-bottom: var(--pixel-border) solid var(--border);
   z-index: 1000;
   height: 80px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
 .header-container {
@@ -19,6 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 76px;
 }
 
 .header-left {
@@ -27,54 +28,89 @@
 }
 
 .logo-button {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--primary);
-  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px 12px;
+  padding: 8px 16px;
   border-radius: var(--radius);
   transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
+  border: var(--pixel-border) solid transparent;
   text-decoration: none;
-  gap: 8px;
 }
 
 .logo-button:hover {
-  background-color: var(--accent);
-  color: var(--accent-foreground);
-  transform: translateY(-1px);
+  transform: scale(1.2);
 }
 
-.logo-button:active {
-  transform: translateY(0);
+.pixel-art {
+  font-size: 6px;
+  line-height: 6px;
+  letter-spacing: -1px;
+  white-space: pre;
 }
 
-.header-right {
+.logo-text {
+  font-size: 16px;
+  font-weight: normal;
+  font-family: var(--pixel-font);
+  letter-spacing: 2px;
+}
+
+.header-bottom-line {
+  height: 4px;
+  background: var(--background);
+  position: relative;
+  overflow: hidden;
+}
+
+.pixel-line-animation {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--neon-green) 20%,
+    var(--neon-blue) 40%,
+    var(--neon-pink) 60%,
+    var(--neon-yellow) 80%,
+    transparent 100%
+  );
+  animation: pixel-scan 3s linear infinite;
+}
+
+ @keyframes pixel-scan {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* New styles for desktop navigation/user profile wrapper */
+.desktop-nav-user-profile {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 16px; /* Adjust as needed */
 }
 
-/* Mobile specific styles */
-@media (max-width: 768px) {
-  .header {
+ @media (max-width: 768px) {
+  .pixel-header {
     height: 70px;
   }
-
+  
   .header-container {
     padding: 0 16px;
+    height: 66px;
+  }
+  
+  .logo-text {
+    font-size: 12px;
   }
 
-  .header-nav {
-    display: none;
-  }
-
-  .logo-button {
-    font-size: 16px;
-    padding: 6px 8px;
+  .desktop-nav-user-profile {
+    display: none; /* Hide desktop nav and user profile on mobile */
   }
 }
