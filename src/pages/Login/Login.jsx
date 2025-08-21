@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 
-const Login = ({ onLogin, theme, toggleTheme }) => {
+const Login = ({ onLogin }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const features = [

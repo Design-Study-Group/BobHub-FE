@@ -33,6 +33,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  flex-grow: 1;
 }
 
 /* Adjust Navigation and UserProfile for sidebar */
@@ -86,6 +87,19 @@
 
 .sidebar.open + .sidebar-overlay {
   display: block;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.logout-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  text-align: center;
 }
 
 @media (min-width: 769px) {
