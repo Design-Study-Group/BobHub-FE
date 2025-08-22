@@ -6,16 +6,16 @@ import HamburgerButton from './components/HamburgerButton';
 import Sidebar from './components/Sidebar';
 import './Header.css';
 
-import ChatbotLight from '../../assets/icons/chatbot-light.svg';
-import ChatbotDark from '../../assets/icons/chatbot-dark.svg';
-import PartiesLight from '../../assets/icons/parties-light.svg';
-import PartiesDark from '../../assets/icons/parties-dark.svg';
-import GamesLight from '../../assets/icons/games-light.svg';
-import GamesDark from '../../assets/icons/games-dark.svg';
-import RestaurantsLight from '../../assets/icons/restaurants-light.svg';
-import RestaurantsDark from '../../assets/icons/restaurants-dark.svg';
-import MypageLight from '../../assets/icons/mypage-light.svg';
-import MypageDark from '../../assets/icons/mypage-dark.svg';
+import ChatbotDefault from '../../assets/icons/chatbot-default.svg';
+import ChatbotActive from '../../assets/icons/chatbot-active.svg';
+import PartiesDefault from '../../assets/icons/parties-default.svg';
+import PartiesActive from '../../assets/icons/parties-active.svg';
+import GamesDefault from '../../assets/icons/games-default.svg';
+import GamesActive from '../../assets/icons/games-active.svg';
+import RestaurantsDefault from '../../assets/icons/restaurants-default.svg';
+import RestaurantsActive from '../../assets/icons/restaurants-active.svg';
+import MypageDefault from '../../assets/icons/mypage-default.svg';
+import MypageActive from '../../assets/icons/mypage-active.svg';
 
 const Header = ({ currentUser, currentPage, onLogout, theme }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -29,40 +29,40 @@ const Header = ({ currentUser, currentPage, onLogout, theme }) => {
       id: 'chatbot', 
       label: 'MENU BOT', 
       icon: {
-        light: ChatbotLight,
-        dark: ChatbotDark,
+        default: ChatbotDefault,
+        active: ChatbotActive,
       },
     },
     {
       id: 'party',
       label: 'PARTIES',
       icon: {
-        light: PartiesLight,
-        dark: PartiesDark,
+        default: PartiesDefault,
+        active: PartiesActive,
       },
     },
     {
       id: 'betting',
       label: 'GAMES',
       icon: {
-        light: GamesLight,
-        dark: GamesDark,
+        default: GamesDefault,
+        active: GamesActive,
       },
     },
     {
       id: 'restaurant',
       label: 'RESTAURANTS',
       icon: {
-        light: RestaurantsLight,
-        dark: RestaurantsDark,
+        default: RestaurantsDefault,
+        active: RestaurantsActive,
       },
     },
     { 
       id: 'mypage', 
       label: 'MY PAGE', 
       icon: {
-        light: MypageLight,
-        dark: MypageDark,
+        default: MypageDefault,
+        active: MypageActive,
       },
     }
   ];

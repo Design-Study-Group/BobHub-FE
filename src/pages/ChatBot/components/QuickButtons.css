@@ -28,5 +28,6 @@
  @media (max-width: 768px) {
   .quick-buttons {
     padding: 12px 16px;
+    justify-content: center;
   }
 }

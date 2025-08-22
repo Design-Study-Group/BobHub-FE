@@ -43,7 +43,7 @@ const UserProfile = ({ currentUser, onLogout }) => {
           <button className="dropdown-item pixel-button" onClick={handleMyPageClick}>
             MY PAGE
           </button>
-          <button className="dropdown-item pixel-button danger" onClick={handleLogoutClick}>
+          <button className="dropdown-item pixel-button primary" onClick={handleLogoutClick}>
             LOGOUT
           </button>
         </div>

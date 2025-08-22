@@ -6,9 +6,9 @@
 
 .nav-item {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   padding: 8px 12px;
   border: var(--pixel-border) solid transparent;
   background: none;
@@ -43,11 +43,29 @@
   justify-content: center;
   width: 24px; /* Adjust as needed */
   height: 24px; /* Adjust as needed */
+  position: relative;
 }
 
 .nav-svg-icon {
   width: 100%;
   height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.nav-svg-icon-active {
+  display: none;
+}
+
+.nav-item:hover .nav-svg-icon-active,
+.nav-item.active .nav-svg-icon-active {
+  display: block;
+}
+
+.nav-item:hover .nav-svg-icon-default,
+.nav-item.active .nav-svg-icon-default {
+  display: none;
 }
 
 .nav-label {
@@ -55,6 +73,7 @@
   font-family: var(--pixel-font);
   letter-spacing: 1px;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {
