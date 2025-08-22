@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Navigation from './components/Navigation';
-import UserProfile from './components/UserProfile';
-import HamburgerButton from './components/HamburgerButton';
+import Navigation from '../../components/Navigation';
+import UserProfile from '../../components/UserProfile';
+import HamburgerButton from '../../components/HamburgerButton';
 import Sidebar from './components/Sidebar';
 import './Header.css';
 
