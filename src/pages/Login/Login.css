@@ -110,12 +110,12 @@
   border-radius: 8px 8px 0 0;
 }
 
-.login-theme-toggle {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 10;
-}
+  .login-theme-toggle {
+    top: 12px;
+    right: 12px;
+  }
+
+
 
 .login-header {
   text-align: center;
@@ -190,6 +190,7 @@
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: none;
 }
 
 .google-login-btn {
@@ -322,4 +323,20 @@
     top: 12px;
     right: 12px;
   }
+}
+
+.google-login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 50px; /* Give it some height for the loading spinner */
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--foreground);
 }

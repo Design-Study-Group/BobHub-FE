@@ -11,17 +11,29 @@ import RestaurantRecommend from './pages/RestaurantRecommend/RestaurantRecommend
 import MyPage from './pages/MyPage/MyPage';
 import './App.css';
 
+
 export default function App() {
   const { theme } = useTheme();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('accessToken'));
+  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
 
   const handleLogin = (userData) => {
-    setIsLoggedIn(true);
-    setCurrentUser(userData);
+    // 백엔드 응답에 'accessToken' 필드가 포함되어 있다고 가정합니다.
+    // 필드명이 다를 경우 (예: token) 이 부분을 수정해야 합니다.
+    if (userData && userData.accessToken) {
+      localStorage.setItem('accessToken', userData.accessToken);
+      localStorage.setItem('user', JSON.stringify(userData));
+      setIsLoggedIn(true);
+      setCurrentUser(userData);
+    } else {
+      console.error("Login failed: No accessToken in response.", userData);
+      alert("로그인에 실패했습니다. 서버 응답을 확인해주세요.");
+    }
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('user');
     setIsLoggedIn(false);
     setCurrentUser(null);
   };

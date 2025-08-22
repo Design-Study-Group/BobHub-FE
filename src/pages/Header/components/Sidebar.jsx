@@ -1,7 +1,6 @@
 import React from 'react';
 import './Sidebar.css';
-import Navigation from '../../components/Navigation';
-import UserProfile from '../../components/UserProfile';
+import Navigation from '../../../components/Navigation';
 
 const Sidebar = ({ isOpen, onClose, navItems, currentPage, setCurrentPage, currentUser, onLogout, theme }) => {
   return (

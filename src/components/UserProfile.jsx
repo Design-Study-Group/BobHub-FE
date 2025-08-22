@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './UserProfile.css';
-import defaultProfileImage from '../../../assets/icons/default-profile.png';
+import defaultProfileImage from '../assets/icons/default-profile.png';
 
 const UserProfile = ({ currentUser, onLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
