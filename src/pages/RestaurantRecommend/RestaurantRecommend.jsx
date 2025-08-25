@@ -1,94 +1,88 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import RestaurantCard from './components/RestaurantCard';
-import RestaurantDetail from './components/RestaurantDetail';
-import { categories, restaurants as initialRestaurants } from './restaurantData';
+import { categories } from './restaurantData';
 import { sortRestaurants } from './utils';
 import AddRestaurantForm from './components/AddRestaurantForm';
+import RestaurantDetail from './components/RestaurantDetail';
+import { getAllRecommendations, createRecommendation } from '../../api/restaurantApi';
 import './RestaurantRecommend.css';
 
-const RestaurantRecommend = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+const RestaurantRecommend = ({ currentUser }) => {
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('rating');
-  const [restaurants, setRestaurants] = useState(initialRestaurants);
+  const [restaurants, setRestaurants] = useState([]); // 초기 맛집 목록 비워둠
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newRestaurant, setNewRestaurant] = useState({
-    name: '',
-    category: 'korean',
-    rating: 0,
-    distance: '',
-    price: '',
-    tags: [],
-    openTime: '',
-    phone: '',
-    description: '',
-    reviews: []
-  });
-  const [tagInput, setTagInput] = useState('');
 
-  const filteredRestaurants = selectedCategory === 'all' 
-    ? restaurants 
+  // 맛집 목록 불러오기
+  const fetchRestaurants = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await getAllRecommendations();
+      setRestaurants(data);
+    } catch (err) {
+      console.error("Failed to fetch restaurants:", err);
+      setError('맛집 목록을 불러오는 데 실패했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchRestaurants();
+  }, [fetchRestaurants]);
+
+  const filteredRestaurants = selectedCategory === 'all'
+    ? restaurants
     : restaurants.filter(restaurant => restaurant.category === selectedCategory);
 
   const sortedRestaurants = sortRestaurants(filteredRestaurants, sortBy);
 
-  const handleAddRestaurant = (e) => {
-    e.preventDefault();
-    
-    if (!newRestaurant.name || !newRestaurant.description || !newRestaurant.price || !newRestaurant.openTime) {
+  const handleAddRestaurant = async (formData) => {
+    if (!formData.storeName ||
+        !formData.category ||
+        formData.star === undefined || formData.star === null ||
+        formData.totalTime === undefined || formData.totalTime === null ||
+        formData.pricePerPerson === undefined || formData.pricePerPerson === null) {
       alert('필수 항목을 모두 입력해주세요.');
       return;
     }
 
-    const restaurantToAdd = {
-      ...newRestaurant,
-      id: Math.max(...restaurants.map(r => r.id)) + 1,
-      rating: 0, // 새로 추가된 맛집은 초기 평점 0
-      reviews: []
-    };
-
-    setRestaurants([...restaurants, restaurantToAdd]);
-    setShowAddForm(false);
-    setNewRestaurant({
-      name: '',
-      category: 'korean',
-      rating: 0,
-      distance: '',
-      price: '',
-      tags: [],
-      openTime: '',
-      phone: '',
-      description: '',
-      reviews: []
-    });
-    setTagInput('');
-
-    // 성공 메시지
-    alert(`"${restaurantToAdd.name}" 맛집이 성공적으로 추가되었습니다!`);
-  };
-
-  const handleAddTag = () => {
-    const trimmedTag = tagInput.trim();
-    if (trimmedTag && !newRestaurant.tags.includes(trimmedTag) && newRestaurant.tags.length < 5) {
-      setNewRestaurant({
-        ...newRestaurant,
-        tags: [...newRestaurant.tags, trimmedTag]
+    try {
+      // 백엔드에 새 맛집 데이터 전송
+      const createdRestaurant = await createRecommendation({
+        ...formData,
+        userId: currentUser.id // Add userId here
       });
-      setTagInput('');
+
+      // 성공 메시지
+      alert(`"${createdRestaurant.storeName}"이(가) 성공적으로 추가되었습니다!`);
+
+      // 폼 초기화 및 목록 새로고침
+      setShowAddForm(false);
+      fetchRestaurants(); // 목록 새로고침
+    } catch (err) {
+      console.error("Failed to add restaurant:", err);
+      alert('맛집 추가에 실패했습니다.');
     }
   };
 
-  const handleRemoveTag = (tagToRemove) => {
-    setNewRestaurant({
-      ...newRestaurant,
-      tags: newRestaurant.tags.filter(tag => tag !== tagToRemove)
-    });
-  };
+  if (loading) {
+    return <div className="loading">맛집 목록을 불러오는 중...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
 
   if (selectedRestaurant) {
     return (
-      <RestaurantDetail 
+      <RestaurantDetail
         restaurant={selectedRestaurant}
+        currentUser={currentUser}
         onBack={() => setSelectedRestaurant(null)}
       />
     );
@@ -144,7 +138,7 @@ const RestaurantRecommend = () => {
             <RestaurantCard 
               key={restaurant.id} 
               restaurant={restaurant}
-              onClick={setSelectedRestaurant}
+              onClick={() => setSelectedRestaurant(restaurant)}
             />
           ))}
         </div>
@@ -165,14 +159,8 @@ const RestaurantRecommend = () => {
         )}
 
         {showAddForm && (
-          <AddRestaurantForm 
-            newRestaurant={newRestaurant}
-            setNewRestaurant={setNewRestaurant}
-            tagInput={tagInput}
-            setTagInput={setTagInput}
-            handleAddRestaurant={handleAddRestaurant}
-            handleAddTag={handleAddTag}
-            handleRemoveTag={handleRemoveTag}
+          <AddRestaurantForm
+            onSave={handleAddRestaurant}
             setShowAddForm={setShowAddForm}
           />
         )}

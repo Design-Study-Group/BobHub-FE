@@ -1,31 +1,41 @@
-import React, { useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { categories } from '../restaurantData';
 import './AddRestaurantForm.css';
 
 const AddRestaurantForm = ({
-  newRestaurant,
-  setNewRestaurant,
-  tagInput,
-  setTagInput,
-  handleAddRestaurant,
-  handleAddTag,
-  handleRemoveTag,
-  setShowAddForm
+  onSave,
+  setShowAddForm,
+  initialData
 }) => {
+  const [formData, setFormData] = useState(
+    initialData || {
+      storeName: '',
+      category: '',
+      star: 0,
+      totalTime: 0,
+      pricePerPerson: 0,
+      isReservation: false,
+    }
+  );
+
   const formRef = useRef(null);
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleAddTag();
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
     }
+  }, [initialData]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSave(formData);
   };
 
   return (
     <div className="add-restaurant-overlay">
       <div className="add-restaurant-form" ref={formRef}>
         <div className="form-header">
-          <h3>맛집 등록하기</h3>
+          <h3>{initialData ? '맛집 수정하기' : '맛집 등록하기'}</h3>
           <button 
             className="close-btn"
             onClick={() => setShowAddForm(false)}
@@ -34,14 +44,14 @@ const AddRestaurantForm = ({
           </button>
         </div>
 
-        <form onSubmit={handleAddRestaurant}>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>가게 이름 *</label>
             <input
               type="text"
-              value={newRestaurant.name}
+              value={formData.storeName}
               onChange={(e) => {
-                setNewRestaurant(prev => ({...prev, name: e.target.value}));
+                setFormData(prev => ({...prev, storeName: e.target.value}));
               }}
               placeholder="ex) 홍대 맛집"
               required
@@ -50,100 +60,79 @@ const AddRestaurantForm = ({
 
           <div className="form-group">
             <label>카테고리 *</label>
-            <select
-              value={newRestaurant.category}
-              onChange={(e) => setNewRestaurant(prev => ({...prev, category: e.target.value}))}
-            >
-              {categories.filter(cat => cat.id !== 'all').map(category => (
-                <option key={category.id} value={category.id}>
-                  {category.icon} {category.label}
-                </option>
+            <div className="category-buttons">
+              {categories.filter(c => c.id !== 'all').map((cat) => (
+                <button
+                  type="button"
+                  key={cat.id}
+                  className={`category-btn ${formData.category === cat.id ? 'active' : ''}`}
+                  onClick={() => setFormData(prev => ({...prev, category: cat.id}))}
+                >
+                  {cat.label}
+                </button>
               ))}
-            </select>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label>거리</label>
-              <input
-                type="text"
-                value={newRestaurant.distance}
-                onChange={(e) => setNewRestaurant(prev => ({...prev, distance: e.target.value}))}
-                placeholder="ex) 100m"
-              />
-            </div>
-            <div className="form-group">
-              <label>가격대 *</label>
-              <input
-                type="text"
-                value={newRestaurant.price}
-                onChange={(e) => setNewRestaurant(prev => ({...prev, price: e.target.value}))}
-                placeholder="ex) 8,000-15,000원"
-                required
-              />
             </div>
           </div>
 
           <div className="form-group">
-            <label>영업시간 *</label>
+            <label>별점 (0-5) *</label>
             <input
-              type="text"
-              value={newRestaurant.openTime}
-              onChange={(e) => setNewRestaurant(prev => ({...prev, openTime: e.target.value}))}
-              placeholder="ex) 11:00-21:00"
+              type="number"
+              value={formData.star}
+              onChange={(e) => {
+                const value = parseInt(e.target.value);
+                setFormData(prev => ({...prev, star: isNaN(value) ? 0 : Math.max(0, Math.min(5, value))}));
+              }}
+              min="0"
+              max="5"
               required
             />
           </div>
 
           <div className="form-group">
-            <label>전화번호</label>
+            <label>예상 소요 시간 (분) *</label>
             <input
-              type="text"
-              value={newRestaurant.phone}
-              onChange={(e) => setNewRestaurant(prev => ({...prev, phone: e.target.value}))}
-              placeholder="ex) 02-1234-5678"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>설명 *</label>
-            <textarea
-              value={newRestaurant.description}
-              onChange={(e) => setNewRestaurant(prev => ({...prev, description: e.target.value}))}
-              placeholder="가게에 대한 간단한 설명을 입력하세요"
-              rows="3"
+              type="number"
+              value={formData.totalTime}
+              onChange={(e) => {
+                const value = parseInt(e.target.value);
+                setFormData(prev => ({...prev, totalTime: isNaN(value) ? 0 : value}));
+              }}
               required
             />
           </div>
 
           <div className="form-group">
-            <label>태그 (최대 5개)</label>
-            <div className="tag-input-container">
-              <input
-                type="text"
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="태그를 입력하고 Enter를 누르세요"
-              />
-              <button type="button" onClick={handleAddTag} className="tag-add-btn">
-                추가
+            <label>1인당 가격 (원) *</label>
+            <input
+              type="number"
+              value={formData.pricePerPerson}
+              onChange={(e) => {
+                const value = parseInt(e.target.value);
+                setFormData(prev => ({...prev, pricePerPerson: isNaN(value) ? 0 : value}));
+              }}
+              placeholder="ex) 15000"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>예약 가능 여부 *</label>
+            <div className="category-buttons">
+              <button
+                type="button"
+                className={`category-btn ${formData.isReservation === true ? 'active' : ''}`}
+                onClick={() => setFormData(prev => ({...prev, isReservation: true}))}
+              >
+                Y
               </button>
-            </div>
-            <p className="tag-help">예: 가성비, 깔끔한, 혼밥가능, 데이트, 단체모임</p>
-            <div className="tags-display">
-              {newRestaurant.tags.map((tag, index) => (
-                <span key={index} className="tag-item">
-                  {tag}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveTag(tag)}
-                    className="tag-remove"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
+              <button
+                type="button"
+                className={`category-btn ${formData.isReservation === false ? 'active' : ''}`}
+                onClick={() => setFormData(prev => ({...prev, isReservation: false}))}
+              >
+                N
+              </button>
             </div>
           </div>
 
@@ -152,7 +141,7 @@ const AddRestaurantForm = ({
               취소
             </button>
             <button type="submit" className="submit-btn">
-              맛집 추가하기
+              {initialData ? '맛집 수정하기' : '맛집 추가하기'}
             </button>
           </div>
         </form>

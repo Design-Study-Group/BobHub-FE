@@ -108,16 +108,20 @@
   font-family: inherit;
 }
 
+.review-form form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .review-form textarea {
-  width: 100%;
+  flex: 1;
   resize: vertical;
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 
 .review-form-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  /* No special styles needed here */
 }
 
 .submit-review-btn {
@@ -129,6 +133,7 @@
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .reviews-list {
@@ -173,7 +178,41 @@
   margin: 0;
 }
 
-@media (max-width: 768px) {
+.action-buttons,
+.comment-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-buttons button,
+.comment-actions button {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
+  padding: 4px 8px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.action-buttons button:hover,
+.comment-actions button:hover {
+  background-color: var(--accent);
+  color: var(--foreground);
+  border-color: var(--accent);
+}
+
+.detail-header .action-buttons {
+  margin-left: auto; /* Pushes buttons to the right */
+}
+
+.comment-actions {
+  margin-left: auto; /* Pushes buttons to the right */
+}
+
+ @media (max-width: 768px) {
   .detail-content {
     grid-template-columns: 1fr;
     gap: 24px;

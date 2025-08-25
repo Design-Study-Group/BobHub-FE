@@ -5,7 +5,7 @@ import defaultProfileImage from '../assets/icons/default-profile.png';
 
 const UserProfile = ({ currentUser, onLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [imageError, setImageError] = useState(false); // New state for image error
+  const [imageError, setImageError] = useState(false);
   const navigate = useNavigate();
 
   const toggleDropdown = () => {
@@ -30,7 +30,7 @@ const UserProfile = ({ currentUser, onLogout }) => {
     <div className="user-profile-container">
       <div className="user-info-clickable" onClick={toggleDropdown}>
         <img
-          src={imageError ? defaultProfileImage : (currentUser?.profileImage || defaultProfileImage)}
+          src={imageError ? defaultProfileImage : (currentUser?.picture || defaultProfileImage)}
           alt="프로필"
           className="user-avatar"
           onError={handleImageError}
