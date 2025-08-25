@@ -13,7 +13,7 @@ axiosInstance.interceptors.request.use(
             return config;
         }
 
-        const accessToken = localStorage.getItem('token');
+        const accessToken = localStorage.getItem('accessToken');
 
         if(!accessToken){
             localStorage.clear();
@@ -40,11 +40,11 @@ axiosInstance.interceptors.response.use(
             try {
                 const refresh = localStorage.getItem('refresh');
                 const res = await getRefresh(refresh);
-                localStorage.setItem('token', res.data.token);
+                localStorage.setItem('accessToken', res.data.token);
                 originalConfig.headers['Authorization'] = `Bearer ${res.data.token}`;
                 return axiosInstance(originalConfig);
             } catch (e) {
-                localStorage.removeItem('token');
+                localStorage.removeItem('accessToken');
                 localStorage.removeItem('refresh');
                 alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
             }

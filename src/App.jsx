@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import useTheme from './hooks/useTheme';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './pages/Header/Header';
@@ -10,7 +10,7 @@ import BettingParty from './pages/BettingParty/BettingParty';
 import RestaurantRecommend from './pages/RestaurantRecommend/RestaurantRecommend';
 import MyPage from './pages/MyPage/MyPage';
 import CallBack from './auth/CallBack';
-import { logoutUser } from './api/oauth';
+import { logoutUser, getUserProfile } from './api/oauth';
 import './App.css';
 
 
@@ -18,6 +18,23 @@ export default function App() {
   const { theme } = useTheme();
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('accessToken'));
   const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (isLoggedIn) {
+        try {
+          const response = await getUserProfile();
+          if (response && response.data) {
+            setCurrentUser(response.data);
+            localStorage.setItem('user', JSON.stringify(response.data));
+          }
+        } catch (error) {
+          console.error("Failed to fetch user profile", error);
+        }
+      }
+    };
+    fetchProfile();
+  }, [isLoggedIn]);
 
   const handleLogin = useCallback((userData) => {
     // 백엔드 응답에 'accessToken' 필드가 포함되어 있다고 가정합니다.

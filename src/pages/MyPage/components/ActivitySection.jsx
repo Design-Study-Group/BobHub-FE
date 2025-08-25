@@ -1,7 +1,34 @@
 import React from 'react';
 import './ActivitySection.css';
 
-const ActivitySection = ({ activityHistory }) => {
+const ActivitySection = ({ activityHistory, loading, error }) => {
+  if (loading) {
+    return (
+      <section className="activity-section">
+        <h2>활동 기록</h2>
+        <p>Loading activities...</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="activity-section">
+        <h2>활동 기록</h2>
+        <p>Error: {error}</p>
+      </section>
+    );
+  }
+
+  if (!activityHistory || activityHistory.length === 0) {
+    return (
+        <section className="activity-section">
+            <h2>활동 기록</h2>
+            <p>활동 기록이 없습니다.</p>
+        </section>
+    );
+  }
+
   return (
     <section className="activity-section">
       <h2>활동 기록</h2>

@@ -20,9 +20,18 @@ export const getRefresh = async (refresh) => {
   }
 };
 
-export const getUserData = async () => {
+export const getUserProfile = async () => {
   try {
-    const res = await GetAxiosInstance('/user/mypage');
+    const res = await GetAxiosInstance('/api/user/profile');
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getUserActivity = async () => {
+  try {
+    const res = await GetAxiosInstance('/api/user/activity');
     return res;
   } catch (e) {
     console.error(e);
@@ -31,7 +40,7 @@ export const getUserData = async () => {
 
 export const deleteUser = async () => {
   try {
-    const res = await DeleteAxiosInstance('/user/delete');
+    const res = await DeleteAxiosInstance('/api/user/delete');
     return res;
   } catch (e) {
     console.error(e);
