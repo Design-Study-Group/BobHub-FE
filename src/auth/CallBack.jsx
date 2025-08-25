@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { PostAxiosInstance } from '../axios/AxiosMethod';
 
-const CallBack = () => {
+const CallBack = ({ onLogin }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -11,16 +11,12 @@ const CallBack = () => {
     const code = searchParams.get('code');
 
     if (code) {
-      // 이 로직은 기존 Login.jsx의 onSuccess 핸들러에서 가져왔습니다.
       const exchangeCodeForToken = async () => {
         try {
-          const backendResponse = await PostAxiosInstance('/api/auth/google', { code });
+          const backendResponse = await PostAxiosInstance('/api/oauth/google', { code });
           
           if (backendResponse.status >= 200 && backendResponse.status < 300) {
-            // 여기서 백엔드로부터 받은 사용자 정보나 토큰을 저장하는 로직이 필요합니다.
-            // (예: Recoil, Redux, Context API 등)
-            // 지금은 성공 알림 후 메인 페이지로 이동시킵니다.
-            alert('로그인 성공!');
+            onLogin(backendResponse.data);
             navigate('/'); // 성공 시 메인 페이지로 이동
           } else {
             const errorData = backendResponse.data;
@@ -30,7 +26,18 @@ const CallBack = () => {
           }
         } catch (error) {
           console.error('Error during Google login callback:', error);
-          alert('로그인 중 오류가 발생했습니다.');
+          if (error.response) {
+            console.error('Response data:', error.response.data);
+            console.error('Response status:', error.response.status);
+            console.error('Response headers:', error.response.headers);
+            alert(`로그인 실패: ${error.response.data.message || '서버 오류'}`);
+          } else if (error.request) {
+            console.error('Request data:', error.request);
+            alert('로그인 중 네트워크 오류가 발생했습니다. 서버가 실행 중인지 확인해주세요.');
+          } else {
+            console.error('Error message:', error.message);
+            alert('로그인 요청 중 오류가 발생했습니다.');
+          }
           navigate('/login'); // 오류 시 로그인 페이지로 이동
         }
       };
@@ -42,8 +49,7 @@ const CallBack = () => {
       alert("로그인에 필요한 인증 코드를 찾을 수 없습니다.");
       navigate('/login');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location, navigate]);
+  }, [location, navigate, onLogin]);
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>

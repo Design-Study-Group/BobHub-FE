@@ -37,3 +37,13 @@ export const deleteUser = async () => {
     console.error(e);
   }
 };
+
+export const logoutUser = async () => {
+  try {
+    const res = await PostAxiosInstance('/api/auth/logout', {});
+    return res;
+  } catch (e) {
+    console.error('Logout failed', e);
+    throw e;
+  }
+};
