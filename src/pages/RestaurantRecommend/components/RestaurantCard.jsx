@@ -12,17 +12,6 @@ const RestaurantCard = ({ restaurant, onClick }) => {
 
   return (
     <div className="restaurant-card" onClick={() => onClick(restaurant)}>
-      <div className="restaurant-image">
-        <img 
-          src={imageError ? defaultRestaurantImage : restaurant.image}
-          alt={restaurant.name}
-          onError={handleImageError}
-        />
-        <div className="rating-badge">
-          ⭐ {restaurant.rating}
-        </div>
-      </div>
-      
       <div className="restaurant-info">
         <h3>{restaurant.name}</h3>
         <div className="restaurant-meta">

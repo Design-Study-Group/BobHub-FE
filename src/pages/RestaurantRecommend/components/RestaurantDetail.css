@@ -50,11 +50,7 @@
   object-fit: cover;
 }
 
-.detail-info {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
+
 
 .info-section h3,
 .reviews-section h3 {

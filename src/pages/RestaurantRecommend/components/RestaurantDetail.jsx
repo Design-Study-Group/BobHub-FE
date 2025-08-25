@@ -26,95 +26,85 @@ const RestaurantDetail = ({ restaurant, onBack }) => {
       </div>
 
       <div className="detail-content">
-        <div className="detail-image">
-          <img 
-            src={imageError ? defaultRestaurantImage : restaurant.image}
-            alt={restaurant.name}
-            onError={handleImageError}
-          />
+        <div className="info-section">
+          <h3>기본 정보</h3>
+          <div className="info-grid">
+            <div className="info-item">
+              <span>⭐ 평점</span>
+              <span>{restaurant.rating}/5.0</span>
+            </div>
+            <div className="info-item">
+              <span>📍 거리</span>
+              <span>{restaurant.distance}</span>
+            </div>
+            <div className="info-item">
+              <span>💰 가격대</span>
+              <span>{restaurant.price}</span>
+            </div>
+            <div className="info-item">
+              <span>⏰ 운영시간</span>
+              <span>{restaurant.openTime}</span>
+            </div>
+            <div className="info-item">
+              <span>📞 전화번호</span>
+              <span>{restaurant.phone}</span>
+            </div>
+          </div>
+          
+          <div className="restaurant-tags">
+            {restaurant.tags.map(tag => (
+              <span key={tag} className="tag">#{tag}</span>
+            ))}
+          </div>
+          
+          <p className="description">{restaurant.description}</p>
         </div>
 
-        <div className="detail-info">
-          <div className="info-section">
-            <h3>기본 정보</h3>
-            <div className="info-grid">
-              <div className="info-item">
-                <span>⭐ 평점</span>
-                <span>{restaurant.rating}/5.0</span>
-              </div>
-              <div className="info-item">
-                <span>📍 거리</span>
-                <span>{restaurant.distance}</span>
-              </div>
-              <div className="info-item">
-                <span>💰 가격대</span>
-                <span>{restaurant.price}</span>
-              </div>
-              <div className="info-item">
-                <span>⏰ 운영시간</span>
-                <span>{restaurant.openTime}</span>
-              </div>
-              <div className="info-item">
-                <span>📞 전화번호</span>
-                <span>{restaurant.phone}</span>
-              </div>
-            </div>
+        <div className="reviews-section">
+          <h3>리뷰 ({restaurant.reviews.length})</h3>
+          
+          <form className="review-form" onSubmit={handleSubmitReview}>
+            <textarea
+              value={newReview.comment}
+              onChange={(e) => setNewReview({...newReview, comment: e.target.value})}
+              placeholder="리뷰를 작성해주세요..."
+              rows="3"
+              required
+            />
             
-            <div className="restaurant-tags">
-              {restaurant.tags.map(tag => (
-                <span key={tag} className="tag">#{tag}</span>
-              ))}
+            <div className="review-form-controls">
+              <div className="rating-input">
+                <label>평점:</label>
+                <select 
+                  value={newReview.rating}
+                  onChange={(e) => setNewReview({...newReview, rating: parseInt(e.target.value)})}
+                >
+                  {[5,4,3,2,1].map(rating => (
+                    <option key={rating} value={rating}>
+                      {'⭐'.repeat(rating)} ({rating}점)
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button type="submit" className="submit-review-btn">
+                리뷰 작성
+              </button>
             </div>
-            
-            <p className="description">{restaurant.description}</p>
-          </div>
+          </form>
 
-          <div className="reviews-section">
-            <h3>리뷰 ({restaurant.reviews.length})</h3>
-            
-            <form className="review-form" onSubmit={handleSubmitReview}>
-              <textarea
-                value={newReview.comment}
-                onChange={(e) => setNewReview({...newReview, comment: e.target.value})}
-                placeholder="리뷰를 작성해주세요..."
-                rows="3"
-                required
-              />
-              
-              <div className="review-form-controls">
-                <div className="rating-input">
-                  <label>평점:</label>
-                  <select 
-                    value={newReview.rating}
-                    onChange={(e) => setNewReview({...newReview, rating: parseInt(e.target.value)})}
-                  >
-                    {[5,4,3,2,1].map(rating => (
-                      <option key={rating} value={rating}>
-                        {'⭐'.repeat(rating)} ({rating}점)
-                      </option>
-                    ))}
-                  </select>
+          <div className="reviews-list">
+            {restaurant.reviews.map(review => (
+              <div key={review.id} className="review-item">
+                <div className="review-header">
+                  <span className="review-user">{review.user}</span>
+                  <span className="review-rating">
+                    {'⭐'.repeat(review.rating)}
+                  </span>
+                  <span className="review-date">{review.date}</span>
                 </div>
-                <button type="submit" className="submit-review-btn">
-                  리뷰 작성
-                </button>
+                <p className="review-comment">{review.comment}</p>
               </div>
-            </form>
-
-            <div className="reviews-list">
-              {restaurant.reviews.map(review => (
-                <div key={review.id} className="review-item">
-                  <div className="review-header">
-                    <span className="review-user">{review.user}</span>
-                    <span className="review-rating">
-                      {'⭐'.repeat(review.rating)}
-                    </span>
-                    <span className="review-date">{review.date}</span>
-                  </div>
-                  <p className="review-comment">{review.comment}</p>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </div>

@@ -4,13 +4,11 @@ import ActivitySection from './components/ActivitySection';
 import './MyPage.css';
 
 const MyPage = ({ currentUser }) => {
-  // Mock user data (can be replaced with actual user data from props or context)
   const userProfile = currentUser || {
     name: '김철수',
     email: 'kim.chulsoo@example.com',
     profileImage: '/api/placeholder/128/128',
     memberSince: '2024-01-15',
-    bio: 'BobHub에서 맛있는 식사를 즐기는 것을 좋아하는 수강생입니다.'
   };
 
   // Mock activity history
