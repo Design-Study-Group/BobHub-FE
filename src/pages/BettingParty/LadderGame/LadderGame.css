@@ -1,0 +1,143 @@
+.ladder-game-container, .ladder-setup-container {
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.canvas-wrapper {
+  margin-bottom: 20px;
+}
+
+.ladder-canvas {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--card);
+  cursor: pointer;
+}
+
+.ladder-setup-container h2, .ladder-game-container h2 {
+  margin-bottom: 24px;
+  color: var(--foreground);
+}
+
+.setup-section {
+  margin-bottom: 20px;
+  text-align: left;
+  width: 100%;
+  max-width: 450px;
+}
+
+.setup-section label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.input-group input {
+  flex-grow: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--input);
+  color: var(--input-foreground);
+}
+
+.input-group button, .start-game-btn, .back-to-setup-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.input-group button:hover, .start-game-btn:hover, .back-to-setup-btn:hover {
+  opacity: 0.8;
+}
+
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.item-list li {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item-list li button {
+  background: none;
+  border: none;
+  color: var(--accent-foreground);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+}
+
+.setup-section input[type="number"] {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--input);
+  color: var(--input-foreground);
+}
+
+.start-game-btn {
+  width: 100%;
+  max-width: 450px;
+  padding: 12px;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.results-summary {
+  margin: 20px;
+  padding: 20px;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.results-summary h3 {
+  margin-bottom: 15px;
+  color: var(--primary);
+}
+
+.results-summary ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.results-summary li {
+  font-size: 1.1rem;
+  color: var(--foreground);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.results-summary li:last-child {
+  border-bottom: none;
+}

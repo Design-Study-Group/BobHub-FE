@@ -1,116 +1,66 @@
-.betting-party {
+.betting-party-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
   min-height: calc(100vh - 80px);
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.betting-header {
+.betting-party-header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 }
 
-.betting-header h1 {
-  font-size: 28px;
+.betting-party-header h1 {
+  font-size: 2.5rem;
   font-weight: 700;
   color: var(--foreground);
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 }
 
-.betting-header p {
-  font-size: 16px;
+.betting-party-header p {
+  font-size: 1.125rem;
   color: var(--muted-foreground);
+  max-width: 600px;
 }
 
-.betting-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-  padding: 0;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.tab-buttons {
-  display: flex;
-  gap: 8px;
-}
-
-.tab-btn {
-  padding: 10px 20px;
-  border: none;
-  background: none;
-  color: var(--muted-foreground);
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.tab-btn:hover {
-  background-color: var(--accent);
-  color: var(--accent-foreground);
-}
-
-.tab-btn.active {
-  background-color: var(--background);
-  color: var(--foreground);
-  border: 0.5px solid var(--primary);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
-}
-
-.create-game-btn {
-  padding: 10px 20px;
-  background-color: var(--primary);
-  color: var(--primary-foreground);
-  border: none;
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.create-game-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-.games-grid {
+.game-selection-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 1000px;
 }
 
-@media (max-width: 768px) {
-  .betting-party {
-    padding: 20px 0;
-  }
-  
-  .container {
-    padding: 0 16px;
-  }
-  
-  .betting-controls {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .tab-buttons {
-    justify-content: center;
-  }
-  
-  .games-grid {
-    grid-template-columns: 1fr;
-  }
+.game-card {
+  background-color: var(--card);
+  border-radius: var(--radius);
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--border);
 }
 
-.betting-party-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.game-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.game-card-icon {
+  font-size: 4rem;
   margin-bottom: 20px;
+}
+
+.game-card-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--card-foreground);
+  margin-bottom: 12px;
+}
+
+.game-card-description {
+  font-size: 1rem;
+  color: var(--muted-foreground);
+  line-height: 1.6;
 }
