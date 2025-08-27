@@ -3,6 +3,7 @@ import './BettingParty.css';
 import LadderGame from './LadderGame/LadderGame';
 import RouletteGame from './RouletteGame/RouletteGame'; // Import RouletteGame
 import Modal from '../../components/Modal/Modal';
+import PinballGame from './PinballGame/PinballGame';
 
 const BettingParty = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,7 +32,7 @@ const BettingParty = () => {
 
   const handleGameSelect = (gameId) => {
     setSelectedGame(gameId); // Set selected game
-    if (gameId === 'ladder' || gameId === 'roulette') { // Allow roulette to open modal
+    if (gameId === 'ladder' || gameId === 'roulette' || gameId === 'pinball') {
       setIsModalOpen(true);
     } else {
       alert('아직 준비 중인 게임입니다.');
@@ -66,6 +67,7 @@ const BettingParty = () => {
       <Modal isOpen={isModalOpen} onClose={closeModal} contentClassName="betting-party-modal-content">
         {selectedGame === 'ladder' && <LadderGame />}
         {selectedGame === 'roulette' && <RouletteGame />} {/* Render RouletteGame */}
+        {selectedGame === 'pinball' && <PinballGame />}
       </Modal>
     </div>
   );

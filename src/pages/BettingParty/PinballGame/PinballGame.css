@@ -1,0 +1,111 @@
+.pinball-game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.pinball-controls {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.input-group input {
+  flex-grow: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--input);
+  color: var(--input-foreground);
+}
+
+.input-group button,
+.pinball-controls > button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 16px;
+}
+
+.input-group button:hover:not(:disabled),
+.pinball-controls > button:hover:not(:disabled) {
+  background-color: hsl(var(--primary-hsl) / 0.8);
+}
+
+.input-group button:disabled,
+.pinball-controls > button:disabled {
+  background-color: var(--primary);
+  cursor: not-allowed;
+}
+
+.participant-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.participant-list li {
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+}
+
+.participant-list li button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+}
+
+.canvas-wrapper {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.canvas-container {
+  width: 500px;
+  height: 600px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.pinball-canvas {
+  background-color: var(--background);
+}
+
+.pinball-winner-display {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  border-radius: var(--radius);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
