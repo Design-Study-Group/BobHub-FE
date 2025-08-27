@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './LadderGame.css';
+import useTheme from '../../../hooks/useTheme';
 
 function shuffle(array) {
   const newArray = [...array];
@@ -14,6 +15,9 @@ function shuffle(array) {
 }
 
 const LadderGame = () => {
+  const { theme } = useTheme();
+  const [mutedColor, setMutedColor] = useState('');
+
   const [gameState, setGameState] = useState('setup');
   const [participants, setParticipants] = useState([]);
   const [punishments, setPunishments] = useState([]);
@@ -34,6 +38,12 @@ const LadderGame = () => {
   const stateRef = useRef();
 
   stateRef.current = { revealed, results, participants, shuffledPunishments };
+
+  useEffect(() => {
+    // 테마가 변경될 때 CSS 변수에서 색상 값을 다시 계산
+    const color = getComputedStyle(document.documentElement).getPropertyValue('--muted').trim();
+    setMutedColor(color);
+  }, [theme]);
 
   const addParticipant = () => {
     if (participantInput.trim() && participants.length < 10) {
@@ -107,7 +117,7 @@ const LadderGame = () => {
 
     // 세로선
     ctx.lineWidth = 3;
-    ctx.strokeStyle = 'hsl(var(--muted-foreground-hsl) / 0.5)';
+    ctx.strokeStyle = theme === 'dark' ? mutedColor : 'hsl(var(--muted-foreground-hsl) / 0.5)';
     verticals.forEach((v) => {
       ctx.beginPath();
       ctx.moveTo(v.x, topY);
@@ -165,7 +175,7 @@ const LadderGame = () => {
       // 벌칙
       const punishmentText = shuffledPunishments[i];
       const isLoserText = punishmentText !== "통과 ✨";
-      ctx.fillStyle = isLoserText ? "#e74c3c" : "#2f2f2fff";
+      ctx.fillStyle = isLoserText ? "#e74c3c" : (theme === 'dark' ? mutedColor : "#2f2f2fff");
       ctx.fillText(punishmentText, v.x, bottomY + 30);
     });
     ctx.restore();
@@ -211,7 +221,7 @@ const LadderGame = () => {
       ctx.restore();
     });
 
-  }, []);
+  }, [theme, mutedColor]);
 
   const update = useCallback(() => {
     const { verticals, horizontals, bottomY } = gameDataRef.current;
@@ -406,8 +416,8 @@ const LadderGame = () => {
   }, [revealed, participants, gameState]);
 
 
-  if (gameState === 'setup') {
-    return (
+  return (
+    <div className="ladder-container">
       <div className="ladder-setup-container">
         <h2>사다리 게임 설정</h2>
         <div className="setup-section">
@@ -419,13 +429,14 @@ const LadderGame = () => {
               onChange={(e) => setParticipantInput(e.target.value)}
               onKeyDown={(e) => handleKeyDown(e, 'participant')}
               placeholder="이름 입력 후 Enter 또는 추가 버튼"
+              disabled={gameState === 'playing'}
             />
-            <button onClick={addParticipant}>추가</button>
+            <button onClick={addParticipant} disabled={gameState === 'playing'}>추가</button>
           </div>
           <ul className="item-list">
             {participants.map((p, i) => (
               <li key={i}>
-                {p} <button onClick={() => setParticipants(participants.filter(item => item !== p))}>x</button>
+                {p} <button onClick={() => setParticipants(participants.filter(item => item !== p))} disabled={gameState === 'playing'}>x</button>
               </li>
             ))}
           </ul>
@@ -439,54 +450,52 @@ const LadderGame = () => {
               onChange={(e) => setPunishmentInput(e.target.value)}
               onKeyDown={(e) => handleKeyDown(e, 'punishment')}
               placeholder="벌칙 입력 후 Enter 또는 추가 버튼"
+              disabled={gameState === 'playing'}
             />
-            <button onClick={addPunishment}>추가</button>
+            <button onClick={addPunishment} disabled={gameState === 'playing'}>추가</button>
           </div>
           <ul className="item-list">
             {punishments.map((p, i) => (
               <li key={i}>
-                {p} <button onClick={() => setPunishments(punishments.filter(item => item !== p))}>x</button>
+                {p} <button onClick={() => setPunishments(punishments.filter(item => item !== p))} disabled={gameState === 'playing'}>x</button>
               </li>
             ))}
           </ul>
         </div>
 
-        <button className="start-game-btn" onClick={handleStartGame}>
-          게임 시작
+        <button className="start-game-btn" onClick={gameState === 'playing' ? () => setGameState('setup') : handleStartGame}>
+          {gameState === 'playing' ? '게임 초기화' : '게임 시작'}
         </button>
       </div>
-    );
-  }
 
-  return (
-    <div className="ladder-game-container">
-      <h2>🎲 사다리 타기</h2>
-      <h3>(이름을 클릭하여 시작)</h3>
-      <div className="canvas-wrapper">
-        <canvas ref={canvasRef} className="ladder-canvas" />
-      </div>
-      {allAnimationsFinished && (
-        <div className="results-summary">
-          <h3>🎉 당첨 결과 🎉</h3>
-          <ul>
-            {participants.map((participant, index) => {
-              const resultIndex = results[index];
-              const punishment = shuffledPunishments[resultIndex];
-              if (punishment !== '통과 ✨') {
-                return (
-                  <li key={index}>
-                    {participant}님이 {punishment}에 당첨되었습니다!
-                  </li>
-                );
-              }
-              return null;
-            })}
-          </ul>
+      {gameState === 'playing' && (
+        <div className="ladder-game-container">
+          <h2>🎲 사다리 타기</h2>
+          <h3>(이름을 클릭하여 시작)</h3>
+          <div className="canvas-wrapper">
+            <canvas ref={canvasRef} className="ladder-canvas" />
+          </div>
+          {allAnimationsFinished && (
+            <div className="results-summary">
+              <h3>🎉 당첨 결과 🎉</h3>
+              <ul>
+                {participants.map((participant, index) => {
+                  const resultIndex = results[index];
+                  const punishment = shuffledPunishments[resultIndex];
+                  if (punishment !== '통과 ✨') {
+                    return (
+                      <li key={index}>
+                        {participant}님이 {punishment}에 당첨되었습니다!
+                      </li>
+                    );
+                  }
+                  return null;
+                })}
+              </ul>
+            </div>
+          )}
         </div>
       )}
-      <button onClick={() => setGameState('setup')} className="back-to-setup-btn">
-        설정으로 돌아가기
-      </button>
     </div>
   );
 };

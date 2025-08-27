@@ -116,7 +116,6 @@ const RouletteGame = () => {
 
     const extraRotations = 5;
     initialRotationAtSpinStartRef.current = rotation;
-    // Calculate the angle needed to align the center of the winning slice with the arrow (270 degrees)
     const angleToAlign = (270 - (winningSliceIndex * anglePerSlice + anglePerSlice / 2) + 360) % 360;
     targetRotationRef.current = rotation + angleToAlign + (extraRotations * 360);
 
@@ -197,7 +196,7 @@ const RouletteGame = () => {
           ))}
         </ul>
         <button onClick={startSpin} disabled={isSpinning || sliceLabels.length < 2}>
-          {isSpinning ? '회전 중...' : '룰렛 돌리기'}
+          {isSpinning ? '회전 중...' : '게임 시작'}
         </button>
       </div>
       <div className="canvas-wrapper">

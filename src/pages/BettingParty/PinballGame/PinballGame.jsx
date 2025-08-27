@@ -1,29 +1,50 @@
 import React, { useRef, useState, useEffect } from "react";
 import './PinballGame.css';
+import useTheme from '../../../hooks/useTheme';
 
 export default function PinballGame() {
+  const { theme } = useTheme();
+  const [mutedColor, setMutedColor] = useState('');
   const canvasRef = useRef(null);
+  const resultsRef = useRef(null); // 결과 영역 Ref 추가
   const [playerLabels, setPlayerLabels] = useState([]);
   const [currentInput, setCurrentInput] = useState("");
   const [balls, setBalls] = useState([]);
   const [loser, setLoser] = useState(null);
   const [running, setRunning] = useState(false);
   const cameraYRef = useRef(0);
-  const [randomObstacles, setRandomObstacles] = useState([]);
+  const [obstacles, setObstacles] = useState([]);
+  const [windZones, setWindZones] = useState([]);
 
-  const generateRandomObstacles = () => {
-    const numObstacles = 30;
-    const newObstacles = [];
+  useEffect(() => {
+    const color = getComputedStyle(document.documentElement).getPropertyValue('--muted').trim();
+    setMutedColor(color);
+  }, [theme]);
+
+  const setupGameElements = () => {
     const canvasWidth = 500;
-    const canvasHeight = 3200;
+    const canvasHeight = 3600;
+    const newObstacles = [];
+    const numObstacles = 40; // 장애물 개수 증가
+    const bumperCount = 5; // 범퍼 개수
 
+    // 장애물 생성
     for (let i = 0; i < numObstacles; i++) {
-      const r = Math.random() * 15 + 10;
+      const r = Math.random() * 10 + 8; // 크기 범위 약간 줄임
       const x = Math.random() * (canvasWidth - 2 * r) + r;
-      const y = Math.random() * (canvasHeight - 2 * r) + r;
-      newObstacles.push({ x, y, r });
+      const y = Math.random() * (canvasHeight - 200) + 150; // 위 아래 여백
+      const isBumper = i < bumperCount; // 처음 몇 개를 범퍼로 지정
+      newObstacles.push({ x, y, r, isBumper });
     }
-    return newObstacles;
+    setObstacles(newObstacles);
+
+    // 바람 영역 생성
+    const newWindZones = [
+      { x: 0, y: 800, width: canvasWidth / 2, height: 200, force: -0.08 }, // 왼쪽으로 미는 바람
+      { x: canvasWidth / 2, y: 1600, width: canvasWidth / 2, height: 200, force: 0.08 }, // 오른쪽으로 미는 바람
+      { x: 0, y: 2400, width: canvasWidth, height: 150, force: Math.random() > 0.5 ? 0.07 : -0.07 } // 랜덤 방향 바람
+    ];
+    setWindZones(newWindZones);
   };
 
   // 참가자 추가
@@ -55,22 +76,42 @@ export default function PinballGame() {
     if (!canvas) return;
 
     setLoser(null);
-    setRandomObstacles(generateRandomObstacles());
+    setupGameElements(); // 게임 요소 (장애물, 바람) 설정
 
-    // 각 참가자 공 생성
-    const newBalls = playerLabels.map((p, i) => ({
-      player: p,
-      x: 50 + i * 50,
-      y: 300, // Changed initial y position
-      dx: Math.random() * 2 - 1,
-      dy: 2,
-      r: 10,
-      color: `hsl(${Math.random() * 360}, 70%, 50%)`,
-    }));
+    // 각 참가자별로 5개의 공 생성
+    const ballsPerPlayer = 5;
+    const newBalls = playerLabels.flatMap((player, playerIndex) => {
+      const playerColor = `hsl(${(playerIndex * 360) / playerLabels.length}, 70%, 60%)`;
+      const playerXStart = 50 + playerIndex * ((canvas.width - 100) / playerLabels.length);
+      const playerXWidth = ((canvas.width - 100) / playerLabels.length);
+
+      return Array.from({ length: ballsPerPlayer }).map(() => ({
+        player: player,
+        x: playerXStart + Math.random() * (playerXWidth - 20) + 10,
+        y: 50 + Math.random() * 150, // 공들이 약간 다른 높이에서 시작
+        dx: Math.random() * 4 - 2,
+        dy: Math.random() * 2 + 1,
+        r: 10,
+        color: playerColor, // 플레이어별로 색상 통일
+      }));
+    });
 
     setBalls(newBalls);
     setRunning(true);
+
+    setTimeout(() => {
+      canvasRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   };
+
+  // 게임 종료 시 결과로 스크롤
+  useEffect(() => {
+    if (loser) {
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+  }, [loser]);
 
   // 공 이동 + 충돌 처리
   useEffect(() => {
@@ -83,39 +124,33 @@ export default function PinballGame() {
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Find the lowest ball to determine camera position
       let lowestBallY = 0;
       if (balls.length > 0) {
         lowestBallY = Math.max(...balls.map(ball => ball.y));
       }
 
-      // Calculate target camera Y to center on the lowest ball
-      // Assuming a visible viewport height of 600 (original canvas height)
       const viewportHeight = 600;
-      let targetCameraY = lowestBallY - 100; // Offset from top of viewport
-
-      // Ensure targetCameraY does not go below 0
-      if (targetCameraY < 0) {
-        targetCameraY = 0;
-      }
-
+      let targetCameraY = lowestBallY - 100;
+      if (targetCameraY < 0) targetCameraY = 0;
       const maxCameraY = canvas.height - viewportHeight;
-      if (targetCameraY > maxCameraY) {
-        targetCameraY = maxCameraY;
-      }
-
+      if (targetCameraY > maxCameraY) targetCameraY = maxCameraY;
       cameraYRef.current += (targetCameraY - cameraYRef.current) * 0.1;
 
+      // 바람 영역 그리기 (시각적 표시)
+      ctx.save();
+      ctx.fillStyle = 'rgba(100, 100, 255, 0.1)';
+      windZones.forEach(zone => {
+        ctx.fillRect(zone.x, zone.y - cameraYRef.current, zone.width, zone.height);
+      });
+      ctx.restore();
+
       // 장애물 그리기
-      ctx.fillStyle = "gray";
-      randomObstacles.forEach((o) => {
+      obstacles.forEach((o) => {
         ctx.beginPath();
+        ctx.fillStyle = o.isBumper ? '#ff6347' : 'gray'; // 범퍼는 다른 색으로 표시
         ctx.arc(o.x, o.y - cameraYRef.current, o.r, 0, Math.PI * 2);
         ctx.fill();
       });
-
-      let gameOver = false;
-      let loserPlayer = null;
 
       const newBalls = [];
       let currentLoser = null;
@@ -123,39 +158,57 @@ export default function PinballGame() {
       balls.forEach((ball) => {
         let { x, y, dx, dy, r, color, player } = ball;
 
-        // 중력
+        // 1. 마찰력/공기저항 적용
+        dx *= 0.997;
+
+        // 2. 바람의 영향 적용
+        windZones.forEach(zone => {
+          if (x > zone.x && x < zone.x + zone.width && y > zone.y && y < zone.y + zone.height) {
+            dx += zone.force;
+          }
+        });
+
+        // 3. 중력
         dy += 0.05;
 
-        // 위치 업데이트
+        // 4. 위치 업데이트
         x += dx;
         y += dy;
 
-        // 벽 충돌
-        if (x - r < 0 || x + r > canvas.width) dx *= -1;
+        // 5. 벽 충돌
+        if (x - r < 0) {
+          x = r;
+          dx *= -0.8;
+        } else if (x + r > canvas.width) {
+          x = canvas.width - r;
+          dx *= -0.8;
+        }
 
-        // 장애물 충돌
-        randomObstacles.forEach((o) => { // Changed to randomObstacles
+        // 6. 장애물 충돌
+        obstacles.forEach((o) => {
           const dist = Math.hypot(x - o.x, y - o.y);
           if (dist < r + o.r) {
-            // 충돌 지점에서의 법선 벡터 계산
             const nx = (x - o.x) / dist;
             const ny = (y - o.y) / dist;
-
-            // 속도 벡터와 법선 벡터의 내적 계산
             const dot = dx * nx + dy * ny;
+            
+            const bounceFactor = o.isBumper ? 1.3 : 0.9; // 범퍼 반발력 감소
 
-            // 속도 벡터 반사 (반발 계수 0.9 적용)
-            dx = (dx - 2 * dot * nx) * 0.9;
-            dy = (dy - 2 * dot * ny) * 0.9;
+            dx = (dx - 2 * dot * nx) * bounceFactor;
+            dy = (dy - 2 * dot * ny) * bounceFactor;
 
-            // 공이 장애물에 파고들지 않도록 위치 조정
             const overlap = r + o.r - dist;
             x += nx * overlap;
             y += ny * overlap;
           }
         });
 
-        // 바닥 도착
+        // 7. 최대 속도 제한
+        const maxDx = 7;
+        if (dx > maxDx) dx = maxDx;
+        if (dx < -maxDx) dx = -maxDx;
+
+        // 8. 바닥 도착
         if (y - r > canvas.height) {
           currentLoser = player;
         } else {
@@ -167,7 +220,7 @@ export default function PinballGame() {
 
           // 사용자 이름 그리기
           ctx.font = '12px YUniverse-B';
-          ctx.fillStyle = 'black';
+          ctx.fillStyle = theme === 'dark' ? mutedColor : 'black';
           ctx.textAlign = 'left';
           ctx.textBaseline = 'middle';
           ctx.fillText(player, x + r + 5, y - cameraYRef.current);
@@ -177,7 +230,6 @@ export default function PinballGame() {
 
       setBalls(newBalls);
 
-      // 게임 종료 조건: 모든 공이 떨어졌을 때
       if (newBalls.length === 0 && running) {
         setLoser(currentLoser);
         setRunning(false);
@@ -191,7 +243,7 @@ export default function PinballGame() {
     animationId = requestAnimationFrame(draw);
 
     return () => cancelAnimationFrame(animationId);
-  }, [running, balls, loser]);
+  }, [running, balls, loser, theme, mutedColor, obstacles, windZones]);
 
   return (
     <div className="pinball-game-container">
@@ -212,7 +264,7 @@ export default function PinballGame() {
         </div>
         <ul className="participant-list">
           {playerLabels.map((label, index) => (
-            <li key={index} style={{ backgroundColor: `hsl(${index * 40}, 70%, 50%)` }}>
+            <li key={index}>
               {label}
               <button onClick={() => handleRemovePlayer(index)} disabled={running}>
                 x
@@ -230,14 +282,14 @@ export default function PinballGame() {
           <canvas
             ref={canvasRef}
             width={500}
-            height={3200}
+            height={3600}
             className="pinball-canvas"
           />
         </div>
       </div>
 
       {loser && (
-        <div className="pinball-winner-display">
+        <div ref={resultsRef} className="pinball-winner-display">
           ❌ 패자: {loser}
         </div>
       )}

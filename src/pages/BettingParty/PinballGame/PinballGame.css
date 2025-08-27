@@ -41,9 +41,15 @@
   font-size: 16px;
 }
 
+.pinball-controls > button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+}
+
 .input-group button:hover:not(:disabled),
 .pinball-controls > button:hover:not(:disabled) {
-  background-color: hsl(var(--primary-hsl) / 0.8);
+  background-color: hsl(var(--primary) / 0.8);
 }
 
 .input-group button:disabled,
@@ -63,18 +69,19 @@
 }
 
 .participant-list li {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
   padding: 6px 12px;
   border-radius: var(--radius);
   display: flex;
   align-items: center;
   gap: 8px;
-  color: white;
 }
 
 .participant-list li button {
   background: none;
   border: none;
-  color: white;
+  color: var(--accent-foreground);
   cursor: pointer;
   font-size: 14px;
   padding: 0;

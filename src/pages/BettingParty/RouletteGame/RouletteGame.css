@@ -39,6 +39,13 @@
   transition: background-color 0.2s;
 }
 
+.roulette-controls > button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
 .input-group button:hover:not(:disabled), .roulette-controls > button:hover:not(:disabled) {
   background-color: hsl(var(--primary-hsl) / 0.8);
 }
