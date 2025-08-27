@@ -49,6 +49,16 @@ const LadderGame = () => {
     }
   };
 
+  const handleKeyDown = (e, type) => {
+    if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+      e.preventDefault();
+      if (type === 'participant') {
+        addParticipant();
+      } else if (type === 'punishment') {
+        addPunishment();
+      }
+    }
+  };
   const handleStartGame = () => {
     if (participants.length < 2) {
       alert('참여자는 2명 이상이어야 합니다.');
@@ -58,8 +68,11 @@ const LadderGame = () => {
       alert('벌칙을 1개 이상 입력해주세요.');
       return;
     }
-    if (loserCount > participants.length || loserCount > punishments.length) {
-      alert('벌칙 당첨자 수는 참여자 수와 벌칙 수보다 많을 수 없습니다.');
+
+    // ✅ 벌칙 당첨자 수 = 벌칙 개수
+    const loserCount = punishments.length;
+    if (loserCount > participants.length) {
+      alert('벌칙 개수가 참여자 수보다 많을 수 없습니다.');
       return;
     }
 
@@ -81,52 +94,93 @@ const LadderGame = () => {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     const { verticals, horizontals, topY, bottomY, colors } = gameDataRef.current;
-    const { participants, shuffledPunishments } = stateRef.current;
+    const { participants, revealed, results, shuffledPunishments } = stateRef.current;
     if (!verticals) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // 1. 사다리 기본 구조 및 텍스트 그리기
     ctx.save();
-    ctx.lineWidth = 3;
-    ctx.font = '16px YUniverse-B';
+    ctx.lineCap = 'round';
     ctx.textAlign = 'center';
+    ctx.font = '16px YUniverse-B';
 
-    verticals.forEach((v, i) => {
-      // 참가자 이름
-      ctx.fillStyle = colors ? colors[i] : 'var(--foreground)';
-      ctx.fillText(participants[i], v.x, topY - 20);
-
-      ctx.strokeStyle = 'var(--muted-foreground)';
+    // 세로선
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'hsl(var(--muted-foreground-hsl) / 0.5)';
+    verticals.forEach((v) => {
       ctx.beginPath();
       ctx.moveTo(v.x, topY);
       ctx.lineTo(v.x, bottomY);
       ctx.stroke();
-      
-      // 벌칙
-      const punishmentText = shuffledPunishments[i];
-      const isLoserText = punishmentText !== "통과 ✨";
-      ctx.fillStyle = isLoserText ? "#e74c3c" : "#161616ff";
-      ctx.fillText(punishmentText, v.x, bottomY + 30);
     });
 
+    // 가로선
     horizontals.forEach(({ col, y }) => {
       const x1 = verticals[col].x;
       const x2 = verticals[col + 1].x;
-      ctx.strokeStyle = 'var(--muted-foreground)';
       ctx.beginPath();
       ctx.moveTo(x1, y);
       ctx.lineTo(x2, y);
       ctx.stroke();
     });
+    
+    ctx.restore(); // 그림자 효과 제거
+
+    const wrapText = (context, text, x, y, maxWidth, lineHeight) => {
+      const words = text.split(' ');
+      let line = '';
+      let testLine = '';
+      let metrics;
+      let ty = y;
+
+      for (let n = 0; n < words.length; n++) {
+        testLine = line + words[n] + ' ';
+        metrics = context.measureText(testLine);
+        const testWidth = metrics.width;
+
+        if (testWidth > maxWidth && n > 0) {
+          context.fillText(line, x, ty);
+          line = words[n] + ' ';
+          ty += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      context.fillText(line, x, ty);
+    };
+
+    // 텍스트 그리기 (그림자 없이)
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.font = `bold ${gameDataRef.current.dynamicFontSize}px YUniverse-B`;
+    const lineHeight = gameDataRef.current.dynamicFontSize * 1.2; // Calculate line height
+    const maxWidth = gameDataRef.current.spacingX * 0.8; // 80% of spacingX for name width
+
+    verticals.forEach((v, i) => {
+      // 참가자 이름
+      ctx.fillStyle = colors ? colors[i] : 'var(--foreground)';
+      wrapText(ctx, participants[i], v.x, topY - 25, maxWidth, lineHeight); // Use wrapText
+
+      // 벌칙
+      const punishmentText = shuffledPunishments[i];
+      const isLoserText = punishmentText !== "통과 ✨";
+      ctx.fillStyle = isLoserText ? "#e74c3c" : "#2f2f2fff";
+      ctx.fillText(punishmentText, v.x, bottomY + 30);
+    });
     ctx.restore();
+
 
     // 2. 경로 그리기
     playersRef.current.forEach(p => {
       if (p.path.length < 2) return;
       ctx.save();
+      ctx.lineCap = 'round';
       ctx.strokeStyle = p.color;
-      ctx.lineWidth = 5;
+      ctx.lineWidth = 6;
+      ctx.globalAlpha = 0.8;
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = 8;
       ctx.beginPath();
       ctx.moveTo(p.path[0].x, p.path[0].y);
       for (let i = 1; i < p.path.length; i++) {
@@ -139,9 +193,20 @@ const LadderGame = () => {
     // 3. 플레이어 점 그리기
     playersRef.current.forEach(p => {
       ctx.save();
+      // Outer glow
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius + 3, 0, Math.PI * 2);
+      ctx.globalAlpha = 0.4;
+      ctx.fill();
+      
+      ctx.globalAlpha = 1;
       ctx.fillStyle = p.color;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 2;
+      ctx.stroke();
       ctx.fill();
       ctx.restore();
     });
@@ -204,9 +269,17 @@ const LadderGame = () => {
     if (gameState !== 'playing') return;
 
     const canvas = canvasRef.current;
+    const container = canvas.parentElement; // .canvas-wrapper
     const numPlayers = participants.length;
-    canvas.width = numPlayers * 120 + 100;
+    
+    // 너비를 부모 요소에 맞게 설정
+    canvas.width = container.offsetWidth;
     canvas.height = 500;
+
+    // Calculate dynamic font size based on canvas width
+    const baseFontSize = 17; // Original font size
+    const mobileBreakpoint = 768; // Example breakpoint for mobile
+    const dynamicFontSize = canvas.width < mobileBreakpoint ? baseFontSize * 0.8 : baseFontSize; // Reduce by 20% for mobile
 
     const spacingX = canvas.width / (numPlayers + 1);
     const topY = 80;
@@ -270,7 +343,7 @@ const LadderGame = () => {
     }
     setResults(paths);
 
-    gameDataRef.current = { verticals, horizontals, topY, bottomY, participantHitboxes, colors };
+    gameDataRef.current = { verticals, horizontals, topY, bottomY, participantHitboxes, colors, dynamicFontSize, spacingX };
     
     const handleCanvasClick = (event) => {
       const { participantHitboxes, verticals, topY, colors } = gameDataRef.current;
@@ -340,35 +413,55 @@ const LadderGame = () => {
         <div className="setup-section">
           <label>참여자 (최대 10명)</label>
           <div className="input-group">
-            <input type="text" value={participantInput} onChange={(e) => setParticipantInput(e.target.value)} placeholder="이름 입력 후 추가" />
+            <input
+              type="text"
+              value={participantInput}
+              onChange={(e) => setParticipantInput(e.target.value)}
+              onKeyDown={(e) => handleKeyDown(e, 'participant')}
+              placeholder="이름 입력 후 Enter 또는 추가 버튼"
+            />
             <button onClick={addParticipant}>추가</button>
           </div>
           <ul className="item-list">
-            {participants.map((p, i) => <li key={i}>{p} <button onClick={() => setParticipants(participants.filter(item => item !== p))}>x</button></li>)}
+            {participants.map((p, i) => (
+              <li key={i}>
+                {p} <button onClick={() => setParticipants(participants.filter(item => item !== p))}>x</button>
+              </li>
+            ))}
           </ul>
         </div>
         <div className="setup-section">
           <label>벌칙</label>
           <div className="input-group">
-            <input type="text" value={punishmentInput} onChange={(e) => setPunishmentInput(e.target.value)} placeholder="벌칙 입력 후 추가" />
+            <input
+              type="text"
+              value={punishmentInput}
+              onChange={(e) => setPunishmentInput(e.target.value)}
+              onKeyDown={(e) => handleKeyDown(e, 'punishment')}
+              placeholder="벌칙 입력 후 Enter 또는 추가 버튼"
+            />
             <button onClick={addPunishment}>추가</button>
           </div>
           <ul className="item-list">
-            {punishments.map((p, i) => <li key={i}>{p} <button onClick={() => setPunishments(punishments.filter(item => item !== p))}>x</button></li>)}
+            {punishments.map((p, i) => (
+              <li key={i}>
+                {p} <button onClick={() => setPunishments(punishments.filter(item => item !== p))}>x</button>
+              </li>
+            ))}
           </ul>
         </div>
-        <div className="setup-section">
-          <label>벌칙 당첨자 수</label>
-          <input type="number" value={loserCount} onChange={(e) => setLoserCount(Math.max(1, parseInt(e.target.value)))} min="1" />
-        </div>
-        <button className="start-game-btn" onClick={handleStartGame}>게임 시작</button>
+
+        <button className="start-game-btn" onClick={handleStartGame}>
+          게임 시작
+        </button>
       </div>
     );
   }
 
   return (
     <div className="ladder-game-container">
-      <h2>🎲 사다리 타기 (이름을 클릭하여 시작)</h2>
+      <h2>🎲 사다리 타기</h2>
+      <h3>(이름을 클릭하여 시작)</h3>
       <div className="canvas-wrapper">
         <canvas ref={canvasRef} className="ladder-canvas" />
       </div>

@@ -59,7 +59,7 @@ const BettingParty = () => {
         ))}
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <Modal isOpen={isModalOpen} onClose={closeModal} contentClassName="betting-party-modal-content">
         <LadderGame />
       </Modal>
     </div>

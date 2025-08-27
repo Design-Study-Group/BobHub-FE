@@ -64,3 +64,13 @@
   color: var(--muted-foreground);
   line-height: 1.6;
 }
+
+.betting-party-modal-content {
+  width: 60%;
+}
+
+@media (max-width: 768px) {
+  .betting-party-modal-content {
+    width: 90%;
+  }
+}

@@ -31,3 +31,9 @@
   cursor: pointer;
   color: var(--muted-foreground);
 }
+
+@media (max-width: 768px) {
+  .modal-content {
+    padding: 30px 10px;
+  }
+}
