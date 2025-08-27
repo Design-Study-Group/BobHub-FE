@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './BettingParty.css';
 import LadderGame from './LadderGame/LadderGame';
+import RouletteGame from './RouletteGame/RouletteGame'; // Import RouletteGame
 import Modal from '../../components/Modal/Modal';
 
 const BettingParty = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedGame, setSelectedGame] = useState(null); // New state to track selected game
 
   const games = [
     {
@@ -28,7 +30,8 @@ const BettingParty = () => {
   ];
 
   const handleGameSelect = (gameId) => {
-    if (gameId === 'ladder') {
+    setSelectedGame(gameId); // Set selected game
+    if (gameId === 'ladder' || gameId === 'roulette') { // Allow roulette to open modal
       setIsModalOpen(true);
     } else {
       alert('아직 준비 중인 게임입니다.');
@@ -37,6 +40,7 @@ const BettingParty = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setSelectedGame(null); // Reset selected game on close
   };
 
   return (
@@ -60,7 +64,8 @@ const BettingParty = () => {
       </div>
 
       <Modal isOpen={isModalOpen} onClose={closeModal} contentClassName="betting-party-modal-content">
-        <LadderGame />
+        {selectedGame === 'ladder' && <LadderGame />}
+        {selectedGame === 'roulette' && <RouletteGame />} {/* Render RouletteGame */}
       </Modal>
     </div>
   );
