@@ -247,7 +247,7 @@ export default function PinballGame() {
 
   return (
     <div className="pinball-game-container">
-      <h2>핀볼 내기 게임</h2>
+      <h2>핀볼 게임</h2>
       <div className="pinball-controls">
         <div className="input-group">
           <input
@@ -277,20 +277,20 @@ export default function PinballGame() {
         </button>
       </div>
 
-      <div className="canvas-wrapper">
-        <div className="canvas-container">
-          <canvas
-            ref={canvasRef}
-            width={500}
-            height={3600}
-            className="pinball-canvas"
-          />
-        </div>
-      </div>
+          <div className="canvas-wrapper">
+            <div className="canvas-container">
+              <canvas
+                ref={canvasRef}
+                width={500}
+                height={3600}
+                className="pinball-canvas"
+              />
+            </div>
+          </div>
 
-      {loser && (
-        <div ref={resultsRef} className="pinball-winner-display">
-          ❌ 패자: {loser}
+          {loser && (
+            <div ref={resultsRef} className="pinball-winner-display">
+              ❌ 패자: {loser}
         </div>
       )}
     </div>

@@ -3,6 +3,8 @@ import './RouletteGame.css';
 
 const RouletteGame = () => {
   const canvasRef = useRef(null);
+  const rouletteRef = useRef(null); // 자동스크롤용 ref
+  const canvasWrapperScrollRef = useRef(null); // 캔버스 감싸는 div에 대한 ref
   const resultRef = useRef(null); // 결과 div에 대한 ref
   const [isSpinning, setIsSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
@@ -28,7 +30,7 @@ const RouletteGame = () => {
     const centerY = canvas.height / 2;
     const radius = Math.min(centerX, centerY) * 0.8;
     const numSlices = sliceLabels.length;
-    const anglePerSlice = (2 * Math.PI) / numSlices; // Radians
+    const anglePerSlice = (2 * Math.PI) / numSlices;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.save();
@@ -89,7 +91,7 @@ const RouletteGame = () => {
 
     if (elapsed < durationRef.current) {
       const progress = elapsed / durationRef.current;
-      const easedProgress = 1 - Math.pow(1 - progress, 4); // Ease-out quartic
+      const easedProgress = 1 - Math.pow(1 - progress, 4);
       const currentAnimatedRotation = initialRotationAtSpinStartRef.current + (targetRotationRef.current - initialRotationAtSpinStartRef.current) * easedProgress;
       drawRoulette(currentAnimatedRotation);
       animationFrameRef.current = requestAnimationFrame(animateSpin);
@@ -119,6 +121,12 @@ const RouletteGame = () => {
 
     setIsSpinning(true);
     setSpinResult(null);
+
+    if (canvasWrapperScrollRef.current) {
+      setTimeout(() => {
+        canvasWrapperScrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 0);
+    }
 
     // 결과를 미리 정하지 않고, 랜덤한 회전 값을 설정
     initialRotationAtSpinStartRef.current = rotation;
@@ -182,7 +190,7 @@ const RouletteGame = () => {
   };
 
   return (
-    <div className="roulette-game-container">
+    <div className="roulette-game-container" ref={rouletteRef}> {/* Add ref here */}
       <h2>룰렛 게임</h2>
       <div className="roulette-controls">
         <div className="input-group">
@@ -214,12 +222,12 @@ const RouletteGame = () => {
           {isSpinning ? '회전 중...' : '게임 시작'}
         </button>
       </div>
-      <div className="canvas-wrapper">
-        <canvas ref={canvasRef} className="roulette-canvas"></canvas>
-      </div>
-      {spinResult && (
-        <div className="roulette-result" ref={resultRef}>
-          <h3>결과: {spinResult}</h3>
+      <div className="canvas-wrapper" ref={canvasWrapperScrollRef}>
+            <canvas ref={canvasRef} className="roulette-canvas"></canvas>
+          </div>
+          {spinResult && (
+            <div className="roulette-result" ref={resultRef}>
+              <h3>결과: {spinResult}</h3>
         </div>
       )}
     </div>
