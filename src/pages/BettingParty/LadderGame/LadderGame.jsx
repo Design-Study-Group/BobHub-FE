@@ -32,6 +32,7 @@ const LadderGame = () => {
   const [allAnimationsFinished, setAllAnimationsFinished] = useState(false);
 
   const canvasRef = useRef(null);
+  const resultRef = useRef(null); // 결과 div ref
   const gameDataRef = useRef({});
   const animationFrameRef = useRef();
   const playersRef = useRef([]);
@@ -415,11 +416,23 @@ const LadderGame = () => {
     }
   }, [revealed, participants, gameState]);
 
+  useEffect(() => {
+    if (allAnimationsFinished && resultRef.current) {
+      resultRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [allAnimationsFinished]);
+
+  useEffect(() => {
+    if (gameState === 'playing' && canvasRef.current) {
+      canvasRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [gameState]);
+
 
   return (
     <div className="ladder-container">
       <div className="ladder-setup-container">
-        <h2>사다리 게임 설정</h2>
+        <h2>사다리 타기</h2>
         <div className="setup-section">
           <label>참여자 (최대 10명)</label>
           <div className="input-group">
@@ -476,7 +489,7 @@ const LadderGame = () => {
             <canvas ref={canvasRef} className="ladder-canvas" />
           </div>
           {allAnimationsFinished && (
-            <div className="results-summary">
+            <div className="results-summary" ref={resultRef}>
               <h3>🎉 당첨 결과 🎉</h3>
               <ul>
                 {participants.map((participant, index) => {
