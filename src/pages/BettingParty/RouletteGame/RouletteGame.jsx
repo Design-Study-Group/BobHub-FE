@@ -15,7 +15,7 @@ const RouletteGame = () => {
   const initialRotationAtSpinStartRef = useRef(0);
 
   const [currentInput, setCurrentInput] = useState('');
-  const [sliceLabels, setSliceLabels] = useState(['항목1', '항목2']);
+  const [sliceLabels, setSliceLabels] = useState([]);
   const [spinResult, setSpinResult] = useState(null);
 
   const generateSliceColor = useCallback((index, totalSlices) => {
@@ -206,6 +206,7 @@ const RouletteGame = () => {
             추가
           </button>
         </div>
+        <span className="input-limit-info">현재 {sliceLabels.length}개 / 최대 8개</span>
         <ul className="item-list">
           {sliceLabels.map((label, index) => (
             <li key={index}>
@@ -218,7 +219,7 @@ const RouletteGame = () => {
             </li>
           ))}
         </ul>
-        <button onClick={startSpin} disabled={isSpinning || sliceLabels.length < 2}>
+        <button onClick={startSpin} disabled={isSpinning || sliceLabels.length < 2} className={isSpinning ? 'spinning' : ''}>
           {isSpinning ? '회전 중...' : '게임 시작'}
         </button>
       </div>

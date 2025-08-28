@@ -55,6 +55,12 @@
   cursor: not-allowed;
 }
 
+/* 회전 중일 때의 버튼 스타일 */
+.roulette-controls > button.spinning {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
 .item-list {
   list-style: none;
   padding: 0;
