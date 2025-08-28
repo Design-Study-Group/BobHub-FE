@@ -15,6 +15,12 @@ export default function PinballGame() {
   const cameraYRef = useRef(0);
   const [obstacles, setObstacles] = useState([]);
   const [windZones, setWindZones] = useState([]);
+  const lastBallPositionRef = useRef(null);
+  const stuckTimerRef = useRef(null);
+  const STUCK_THRESHOLD_MS = 4000; // 4 seconds
+  
+  const STILL_THRESHOLD = 0.05; // px
+  const FINAL_STUCK_DISTANCE_THRESHOLD = 15; // 4초 동안 15px 미만으로 움직였을 때 최종 끼임으로 판정
 
   useEffect(() => {
     const color = getComputedStyle(document.documentElement).getPropertyValue('--muted').trim();
@@ -235,14 +241,51 @@ export default function PinballGame() {
         setRunning(false);
         cancelAnimationFrame(animationId);
         return;
-      }
+      } else if (newBalls.length === 1 && running) { // 공이 1개만 남았을 때 끼임 감지
+        const lastBall = newBalls[0];
 
+        if (!stuckTimerRef.current) {
+          // 타이머가 없다면, 현재 시간과 위치를 기록하며 타이머 시작
+          stuckTimerRef.current = { time: performance.now(), pos: { x: lastBall.x, y: lastBall.y } };
+        }
+
+        const elapsed = performance.now() - stuckTimerRef.current.time;
+
+        // 4초(STUCK_THRESHOLD_MS)마다 체크
+        if (elapsed > STUCK_THRESHOLD_MS) {
+          const totalDist = Math.hypot(
+            lastBall.x - stuckTimerRef.current.pos.x,
+            lastBall.y - stuckTimerRef.current.pos.y
+          );
+
+          console.log(`4초 경과. 총 이동 거리: ${totalDist.toFixed(2)}px`);
+
+          // 4초 동안 이동한 총 거리가 기준치 미만이면 최종 끼임으로 판정
+          if (totalDist < FINAL_STUCK_DISTANCE_THRESHOLD) {
+            console.log("마지막 공이 끼어 게임을 종료합니다.");
+            setLoser(lastBall.player);
+            setRunning(false);
+            cancelAnimationFrame(animationId);
+            return;
+          } else {
+            // 공이 기준치 이상 움직였다면, 타이머를 현재 시간과 위치로 리셋하여 다시 4초 관찰
+            console.log("공이 움직이고 있으므로, 끼임 감지 타이머를 리셋합니다.");
+            stuckTimerRef.current = { time: performance.now(), pos: { x: lastBall.x, y: lastBall.y } };
+          }
+        }
+      } else if (newBalls.length > 1) {
+        // 공이 여러 개일 경우, 타이머와 위치 기록을 리셋
+        stuckTimerRef.current = null;
+        lastBallPositionRef.current = null;
+      }
       animationId = requestAnimationFrame(draw);
     };
 
     animationId = requestAnimationFrame(draw);
 
-    return () => cancelAnimationFrame(animationId);
+    return () => {
+      cancelAnimationFrame(animationId);
+    };
   }, [running, balls, loser, theme, mutedColor, obstacles, windZones]);
 
   return (
