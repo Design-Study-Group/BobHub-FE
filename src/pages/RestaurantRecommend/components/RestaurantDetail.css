@@ -90,38 +90,67 @@
   margin-bottom: 24px;
 }
 
+.review-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-form .comment-controls-top { /* Increased specificity */
+  display: flex;
+  flex-direction: row; /* Explicitly set to row */
+  flex-wrap: nowrap; /* Ensure no wrapping */
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
 .rating-input {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px; /* Reduced gap */
   font-size: 16px;
   font-weight: 500;
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+  /* Removed debug border and width: auto */
 }
 
-.rating-input select,
-.review-form textarea {
+.rating-input .stars {
+  display: flex;
+  gap: 4px;
+  cursor: pointer;
+  color: var(--muted-foreground);
+}
+
+.rating-input .stars span.active {
+  color: #f59e0b;
+}
+
+.comment-textarea {
   padding: 8px 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background-color: var(--input-background);
+  background-color: var(--input);
   font-size: 16px;
   font-family: inherit;
-}
-
-.review-form form {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.review-form textarea {
-  flex: 1;
   resize: vertical;
-  margin-bottom: 0;
+  min-height: 60px;
+  width: 100%; /* Added for consistent width */
+  box-sizing: border-box; /* Added for consistent width */
+  color: var(--input-foreground); /* Added for dark mode visibility */
 }
 
 .review-form-controls {
-  /* No special styles needed here */
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px; /* Add gap for buttons */
+}
+
+.review-form-controls button {
+  padding: 6px 12px; /* Smaller padding */
+  font-size: 14px; /* Smaller font */
 }
 
 .submit-review-btn {
@@ -134,6 +163,8 @@
   font-size: 16px;
   font-weight: 500;
   white-space: nowrap;
+  flex-shrink: 0;
+  /* Removed debug border and width: auto */
 }
 
 .reviews-list {
@@ -155,6 +186,7 @@
   align-items: center;
   margin-bottom: 8px;
   font-size: 16px;
+  justify-content: space-between; /* Added for button alignment */
 }
 
 .review-user {
@@ -163,6 +195,16 @@
 }
 
 .review-rating {
+  margin-top: 8px;
+  display: flex; /* Added to make stars align */
+  gap: 2px; /* Spacing between stars */
+}
+
+.review-rating span {
+  color: var(--muted-foreground); /* Default gray color for all stars */
+}
+
+.review-rating span.active {
   color: #f59e0b;
 }
 
@@ -209,7 +251,7 @@
 }
 
 .comment-actions {
-  margin-left: auto; /* Pushes buttons to the right */
+  /* margin-left: auto; */ /* Removed as justify-content handles it */
 }
 
  @media (max-width: 768px) {

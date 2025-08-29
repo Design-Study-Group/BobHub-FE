@@ -11,7 +11,7 @@ const AddRestaurantForm = ({
     initialData || {
       storeName: '',
       category: '',
-      star: 0,
+      description: '',
       totalTime: 0,
       pricePerPerson: 0,
       isReservation: false,
@@ -75,17 +75,14 @@ const AddRestaurantForm = ({
           </div>
 
           <div className="form-group">
-            <label>별점 (0-5) *</label>
+            <label>대표 메뉴 *</label>
             <input
-              type="number"
-              value={formData.star}
+              type="text"
+              value={formData.description}
               onChange={(e) => {
-                const value = parseInt(e.target.value);
-                setFormData(prev => ({...prev, star: isNaN(value) ? 0 : Math.max(0, Math.min(5, value))}));
+                setFormData(prev => ({...prev, description: e.target.value}));
               }}
-              min="0"
-              max="5"
-              required
+              placeholder="ex) 순대국, 된장찌개"
             />
           </div>
 
