@@ -106,7 +106,6 @@
 
 .message-content {
   background-color: var(--accent);
-  color: var(--accent-foreground);
   padding: 10px 14px;
   border-radius: 12px;
   line-height: 1.4;

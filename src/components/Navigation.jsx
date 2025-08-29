@@ -13,7 +13,7 @@ const Navigation = ({ navItems, currentPage, isSidebarNav, onClose, theme }) => 
             key={item.id}
             to={`/${item.id}`}
             className={`nav-item ${currentPage === item.id ? 'active' : ''}`}
-            onClick={onClose} // Close sidebar on navigation item click
+            onClick={onClose}
           >
             <div className="nav-icon">
               <img src={item.icon.default} alt={item.label} className="nav-svg-icon nav-svg-icon-default" />
