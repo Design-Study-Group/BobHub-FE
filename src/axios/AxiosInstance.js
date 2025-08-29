@@ -44,8 +44,8 @@ axiosInstance.interceptors.response.use(
                 originalConfig.headers['Authorization'] = `Bearer ${res.data.token}`;
                 return axiosInstance(originalConfig);
             } catch (e) {
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('refresh');
+                localStorage.clear();
+                window.location.href = '/login';
                 alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
             }
         }
