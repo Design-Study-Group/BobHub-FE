@@ -87,7 +87,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background-color: var(--input-background);
-  color: var(--foreground);
+  color: var(--input-foreground); /* Added for dark mode visibility */
   cursor: pointer;
 }
 

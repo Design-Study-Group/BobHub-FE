@@ -44,7 +44,7 @@ const RestaurantRecommend = ({ currentUser }) => {
   const handleAddRestaurant = async (formData) => {
     if (!formData.storeName ||
         !formData.category ||
-        formData.star === undefined || formData.star === null ||
+        !formData.description ||
         formData.totalTime === undefined || formData.totalTime === null ||
         formData.pricePerPerson === undefined || formData.pricePerPerson === null) {
       alert('필수 항목을 모두 입력해주세요.');
