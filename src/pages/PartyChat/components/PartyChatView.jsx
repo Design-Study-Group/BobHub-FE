@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './PartyChatView.css';
+import { GetAxiosInstance, PostAxiosInstance } from '../../../axios/AxiosMethod';
 
 const PartyChatView = ({ selectedParty, setSelectedParty, handleJoinParty, currentUser }) => {
   // 카테고리 매핑
@@ -9,10 +10,42 @@ const PartyChatView = ({ selectedParty, setSelectedParty, handleJoinParty, curre
     { id: 'LUNCHBOX', label: '도시락' }
   ];
 
-  // 카테고리 ID를 라벨로 변환하는 함수
   const getCategoryLabel = (categoryId) => {
     const category = categories.find(cat => cat.id === categoryId);
     return category ? category.label : categoryId;
+  };
+
+  // 댓글(게시판) 상태
+  const [posts, setPosts] = useState([]);
+  const [boardContent, setBoardContent] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  const loadPosts = async () => {
+    try {
+      const res = await GetAxiosInstance(`/parties/${selectedParty.id}/comments`);
+      const data = res?.data;
+      setPosts(Array.isArray(data) ? data : []);
+    } catch (_) {
+      setPosts([]);
+    }
+  };
+
+  useEffect(() => {
+    loadPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedParty.id]);
+
+  const handleSubmitPost = async (e) => {
+    e.preventDefault();
+    if (!boardContent.trim()) return;
+    try {
+      setSubmitting(true);
+      await PostAxiosInstance(`/parties/${selectedParty.id}/comments`, { comments: boardContent });
+      setBoardContent('');
+      await loadPosts();
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -29,6 +62,12 @@ const PartyChatView = ({ selectedParty, setSelectedParty, handleJoinParty, curre
           <span>{selectedParty.currentPeople}/{selectedParty.limitPeople}명 참여중</span>
         </div>
         <div className="chat-actions">
+          <button
+            className="members-btn"
+            onClick={() => alert('참여 멤버 보기 기능은 준비 중입니다.')}
+          >
+            참여멤버
+          </button>
           {selectedParty.isOpen && (
             <button 
               className="join-btn"
@@ -73,10 +112,37 @@ const PartyChatView = ({ selectedParty, setSelectedParty, handleJoinParty, curre
         )}
       </div>
 
-      {/* 메시지 기능은 백엔드 스펙 확정 후 연동합니다. */}
-      <div className="chat-placeholder">
-        <p>채팅 기능은 준비 중입니다.</p>
+      <div className="chat-messages">
+        {posts.length === 0 ? (
+          <div className="message-info">아직 댓글이 없습니다.</div>
+        ) : (
+          posts.map((m) => (
+            <div 
+              key={m.id} 
+              className={`chat-message ${m.name && currentUser?.name && m.name === currentUser.name ? 'own' : ''}`}
+            >
+              <div className="message-info">
+                <span className="message-user">{m.name || '익명'}</span>
+                <span className="message-time">{m.createdAt ? new Date(m.createdAt).toLocaleString('ko-KR') : ''}</span>
+              </div>
+              <div className="message-content">{m.comments}</div>
+            </div>
+          ))
+        )}
       </div>
+
+      <form className="chat-input" onSubmit={handleSubmitPost}>
+        <input 
+          type="text" 
+          placeholder="댓글을 입력하세요..."
+          className="message-input"
+          value={boardContent}
+          onChange={(e) => setBoardContent(e.target.value)}
+        />
+        <button className="send-btn" type="submit" disabled={submitting}>
+          {submitting ? '전송중...' : '전송'}
+        </button>
+      </form>
     </div>
   );
 };
