@@ -9,12 +9,16 @@ const RestaurantCard = ({ restaurant }) => {
     navigate(`/restaurant/${restaurant.id}`);
   };
 
+  function formatFloat(val) {
+    return val.toFixed(1); // 항상 소수점 1자리
+  }
+
   return (
     <div className="restaurant-card" onClick={handleClick}>
       <div className="restaurant-info">
         <h3>{restaurant.storeName}</h3>
         <div className="restaurant-meta">
-          <span className="ratings">⭐ {restaurant.averageRating}/5.0 ({restaurant.ratingCount})</span>
+          <span className="ratings">⭐ {formatFloat(restaurant.averageRating)}/5.0 ({restaurant.ratingCount})</span>
           <span className="total-time">⏰ {restaurant.totalTime}분</span>
           <span className="price-per-person">💰 {restaurant.pricePerPerson}원</span>
         </div>
