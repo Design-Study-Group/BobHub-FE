@@ -3,15 +3,32 @@ import './PartyList.css';
 
 const PartyList = ({ parties, activeCategory, setActiveCategory, setSelectedParty, setNewPartyForm }) => {
   const categories = [
-    { id: 'all', label: '전체', icon: '🍽️' },
-    { id: 'dining', label: '외식', icon: '🍽️' },
-    { id: 'delivery', label: '배달', icon: '🚚' },
-    { id: 'lunchbox', label: '도시락', icon: '🍱' }
+    { id: 'ALL', label: '전체', icon: '🍽️' },
+    { id: 'DINE_OUT', label: '외식', icon: '🍽️' },
+    { id: 'DELIVERY', label: '배달', icon: '🚚' },
+    { id: 'LUNCHBOX', label: '도시락', icon: '🍱' }
   ];
+
+  // 카테고리 ID를 라벨로 변환하는 함수
+  const getCategoryLabel = (categoryId) => {
+    const category = categories.find(cat => cat.id === categoryId);
+    return category ? category.label : categoryId;
+  };
 
   const filteredParties = activeCategory === 'all' 
     ? parties 
     : parties.filter(party => party.category === activeCategory);
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleString('ko-KR', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
   return (
     <div className="party-list">
@@ -46,20 +63,21 @@ const PartyList = ({ parties, activeCategory, setActiveCategory, setSelectedPart
           >
             <div className="party-card-header">
               <h3>{party.title}</h3>
-              <span className={`party-status ${party.status}`}>
-                {party.status === 'recruiting' ? '모집중' : '모집완료'}
+              <span className={`party-status ${party.isOpen ? 'recruiting' : 'closed'}`}>
+                {party.isOpen ? '모집중' : '모집완료'}
               </span>
             </div>
             
-            <p className="party-description">{party.description}</p>
-            
             <div className="party-info">
               <div className="party-meta">
-                <span>👤 {party.members.length}/{party.maxMembers}</span>
-                <span>📍 {party.location}</span>
-                <span>⏰ {party.time}</span>
+                <span>👤 {party.currentPeople}/{party.limitPeople}</span>
+                <span>🏷️ {getCategoryLabel(party.category)}</span>
+                {party.finishedAt && <span>⏰ 종료: {formatDate(party.finishedAt)}</span>}
               </div>
-              <div className="party-creator">만든이: {party.creator}</div>
+              {party.limitPrice > 0 && (
+                <div className="party-price">1인 한도: {party.limitPrice.toLocaleString()}원</div>
+              )}
+              <div className="party-created">생성: {formatDate(party.createdAt)}</div>
             </div>
           </div>
         ))}
