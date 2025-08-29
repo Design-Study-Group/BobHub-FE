@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { PostAxiosInstance } from '../axios/AxiosMethod';
+import { getUserProfile } from '../api/oauth';
 
 const CallBack = ({ onLogin }) => {
   const location = useLocation();
@@ -16,8 +17,15 @@ const CallBack = ({ onLogin }) => {
           const backendResponse = await PostAxiosInstance('/api/oauth/google', { code });
           
           if (backendResponse.status >= 200 && backendResponse.status < 300) {
-            onLogin(backendResponse.data);
-            navigate('/'); // 성공 시 메인 페이지로 이동
+            const userProfile = await getUserProfile();
+            if (userProfile && userProfile.data) {
+              onLogin(userProfile.data);
+              navigate('/'); // 성공 시 메인 페이지로 이동
+            } else {
+              console.error('Failed to fetch user profile after login.');
+              alert('로그인 후 사용자 정보를 불러오는 데 실패했습니다.');
+              navigate('/login');
+            }
           } else {
             const errorData = backendResponse.data;
             console.error('Backend authentication failed:', errorData.message);

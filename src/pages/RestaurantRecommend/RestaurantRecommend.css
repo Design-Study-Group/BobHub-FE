@@ -87,7 +87,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background-color: var(--input-background);
-  color: var(--input-foreground); /* Added for dark mode visibility */
+  color: var(--input-foreground);
   cursor: pointer;
 }
 
@@ -151,17 +151,14 @@
   }
   
   .restaurant-controls {
-    flex-direction: column;
-    align-items: stretch;
     gap: 16px;
     padding: 1rem;
     overflow-x: hidden;
     margin-bottom: 0px;
   }
   
-  .controls-right { /* Changed from controls-right */
+  .controls-right {
     justify-content: space-between;
-    width: 100%;
   }
   
   .category-filter {
@@ -173,16 +170,16 @@
     scroll-snap-type: none;
     padding-right: 1.25rem;
     scrollbar-width: none;
-    width: 100%;
+    /* width: 100%; Removed */
     box-sizing: border-box;
   }
   
   .category-filter::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for WebKit browsers */
+    display: none;
   }
   
   .category-btn {
-    flex-shrink: 0; /* Prevent buttons from shrinking */
+    flex-shrink: 0;
     scroll-snap-align: start;
   }
   

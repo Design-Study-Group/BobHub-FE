@@ -33,7 +33,6 @@
     radial-gradient(circle at 75% 75%, rgba(219, 39, 119, 0.1) 1px, transparent 1px),
     radial-gradient(circle at 50% 10%, rgba(8, 145, 178, 0.08) 1px, transparent 1px);
   background-size: 60px 60px, 40px 40px, 80px 80px;
-  animation: dreamy-float 25s ease-in-out infinite;
 }
 
 /* 다크 모드 배경 */
@@ -60,7 +59,6 @@
     radial-gradient(circle at 75% 75%, rgba(236, 72, 153, 0.12) 1px, transparent 1px),
     radial-gradient(circle at 50% 10%, rgba(6, 182, 212, 0.1) 1px, transparent 1px);
   background-size: 60px 60px, 40px 40px, 80px 80px;
-  animation: dreamy-float 20s ease-in-out infinite;
 }
 
 @keyframes dreamy-float {
@@ -165,6 +163,7 @@
   font-weight: normal;
   color: var(--foreground);
   transition: all 0.3s ease;
+  cursor: not-allowed;
 }
 
 .dark .feature-item {
@@ -173,15 +172,11 @@
 }
 
 .feature-item:hover {
-  transform: translateX(4px);
-  border-color: var(--soft-purple);
   background: rgba(124, 58, 237, 0.12);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
 }
 
 .dark .feature-item:hover {
   background: rgba(139, 92, 246, 0.12);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
 }
 
 .feature-icon {
@@ -191,6 +186,11 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
 }
 
 .google-login-btn {
