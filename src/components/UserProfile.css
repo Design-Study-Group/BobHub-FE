@@ -47,12 +47,13 @@
 
 .user-dropdown {
   position: absolute;
-  right: 0;
+  top: calc(100% + 5px); /* Position below the user info with a small gap */
+  left: 0;
+  width: 100%;
   box-shadow: 0 0 15px rgba(255, 0, 183, 0.2);
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  min-width: 110px;
   overflow: hidden;
 }
 

@@ -11,25 +11,10 @@ const FeaturesGrid = ({ features, setCurrentPage }) => {
             className={`feature-card ${feature.color}`}
             onClick={() => setCurrentPage(feature.id)}
           >
-            <div className="feature-header">
-              <div className="feature-pixel-icon">
-                {feature.pixel.split('n').map((line, index) => (
-                  <div key={index} className="pixel-line">{line}</div>
-                ))}
-              </div>
-              <div className="feature-icon">{feature.icon}</div>
-            </div>
             <div className="feature-content">
-              <div>
-                <h3 className="feature-title">{feature.title}</h3>
-                <p className="feature-description">{feature.description}</p>
-              </div>
-              <div className="feature-card-bottom">
-                <div className="feature-stats">{feature.stats}</div>
-                <button className="feature-btn pixel-button">
-                  ENTER
-                </button>
-              </div>
+              {feature.icon && <img src={feature.icon} alt={feature.title} className="feature-icon" />}
+              <h3 className="feature-title">{feature.title}</h3>
+              <p className="feature-description">{feature.description}</p>
             </div>
             <div className="feature-glow"></div>
           </div>

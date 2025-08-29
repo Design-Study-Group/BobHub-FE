@@ -60,6 +60,15 @@ const RestaurantDetailWrapper = ({ currentUser }) => {
   );
 };
 
+// DashboardWrapper 컴포넌트 정의
+const DashboardWrapper = () => {
+  const navigate = useNavigate();
+  const setCurrentPage = (page) => {
+    navigate(`/${page}`);
+  };
+  return <Dashboard setCurrentPage={setCurrentPage} />;
+};
+
 export default function App() {
   const { theme } = useTheme();
   const [isLoggedIn, setIsLoggedIn] = useState(!!JSON.parse(localStorage.getItem('user')));
@@ -124,14 +133,14 @@ export default function App() {
           />
           <main className="main-content">
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<DashboardWrapper />} />
               <Route path="/chatbot" element={<ChatBot />} />
               <Route path="/party" element={<PartyChat currentUser={currentUser} />} />
               <Route path="/betting" element={<BettingParty currentUser={currentUser} />} />
               <Route path="/restaurant" element={<RestaurantRecommend currentUser={currentUser} />} />
               <Route path="/restaurant/:id" element={<RestaurantDetailWrapper currentUser={currentUser} />} /> {/* 추가 */}
               <Route path="/mypage" element={<MyPage currentUser={currentUser} />} />
-              <Route path="*" element={<Dashboard />} />
+              <Route path="*" element={<DashboardWrapper />} />
             </Routes>
           </main>
         </div>
