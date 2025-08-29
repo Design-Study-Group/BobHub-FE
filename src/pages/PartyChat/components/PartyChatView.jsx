@@ -5,6 +5,7 @@ import { GetAxiosInstance, PostAxiosInstance } from '../../../axios/AxiosMethod'
 const PartyChatView = ({ selectedParty, setSelectedParty, handleJoinParty, currentUser }) => {
   // 카테고리 매핑
   const categories = [
+    { id: 'ALL', label: '전체' },
     { id: 'DINE_OUT', label: '외식' },
     { id: 'DELIVERY', label: '배달' },
     { id: 'LUNCHBOX', label: '도시락' }
