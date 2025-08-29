@@ -1,6 +1,12 @@
 import React from 'react';
 import './CreatePartyForm.css';
 
+const partyCategories = [
+  { id: 'delivery', label: '배달' },
+  { id: 'dining', label: '외식' },
+  { id: 'lunchbox', label: '도시락' },
+];
+
 const CreatePartyForm = ({ newPartyData, setNewPartyData, setNewPartyForm, handleCreateParty }) => {
   return (
     <div className="create-party-overlay">
@@ -28,15 +34,19 @@ const CreatePartyForm = ({ newPartyData, setNewPartyData, setNewPartyForm, handl
           </div>
 
           <div className="form-group">
-            <label>카테고리</label>
-            <select
-              value={newPartyData.category}
-              onChange={(e) => setNewPartyData({...newPartyData, category: e.target.value})}
-            >
-              <option value="delivery">배달</option>
-              <option value="dining">외식</option>
-              <option value="lunchbox">도시락</option>
-            </select>
+            <label>카테고리 *</label>
+            <div className="category-buttons">
+              {partyCategories.map((cat) => (
+                <button
+                  type="button"
+                  key={cat.id}
+                  className={`category-btn ${newPartyData.category === cat.id ? 'active' : ''}`}
+                  onClick={() => setNewPartyData({...newPartyData, category: cat.id})}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="form-group">

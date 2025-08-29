@@ -74,6 +74,12 @@
   background-color: var(--input-background);
   font-size: 14px;
   font-family: inherit;
+  color: var(--input-foreground); /* Added for dark mode visibility */
+}
+
+.form-group select option {
+  background-color: var(--input-background);
+  color: var(--input-foreground);
 }
 
 .form-group textarea {
@@ -126,6 +132,7 @@
     margin-top: 0;
     width: 100%;
     max-width: none;
+    max-height: none;
     height: auto;
   }
 
