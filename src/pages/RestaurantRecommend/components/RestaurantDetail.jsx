@@ -238,7 +238,11 @@ const RestaurantDetail = ({ restaurant, currentUser, onBack }) => {
                       handleUpdateComment(comment.id, e.target.content.value, editingRating);
                     }}>
                       <div className="review-header">
-                        <span className="review-user">{comment.userName}</span>
+                        {comment.userName ? (
+                          <span className="review-user">{comment.userName}</span>
+                        ) : (
+                          <span className="review-user withdrawn-user">탈퇴한 사용자</span>
+                        )}
                         <div className='comment-actions'>
                           <button type="submit" className='submit-review-btn'>수정 완료</button>
                           <button type="button" onClick={() => setEditingCommentId(null)} className='submit-review-btn'>취소</button>
@@ -258,7 +262,11 @@ const RestaurantDetail = ({ restaurant, currentUser, onBack }) => {
               ) : (
                 <div key={comment.id} className="review-item">
                   <div className="review-header">
-                    <span className="review-user">{comment.userName}</span>
+                    {comment.userName ? (
+                      <span className="review-user">{comment.userName}</span>
+                    ) : (
+                      <span className="review-user withdrawn-user">탈퇴한 사용자</span>
+                    )}
                       {currentUser && comment.userId === currentUser.id && comment.id !== editingCommentId && (
                         <div className="comment-actions">
                           <button onClick={() => { setEditingCommentId(comment.id); setEditingRating(comment.star || 0); }}>수정</button>

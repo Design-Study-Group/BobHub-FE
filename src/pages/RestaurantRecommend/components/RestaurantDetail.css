@@ -265,3 +265,8 @@
     height: 200px;
   }
 }
+
+.review-user.withdrawn-user {
+  color: var(--muted-foreground);
+  font-style: italic;
+}
