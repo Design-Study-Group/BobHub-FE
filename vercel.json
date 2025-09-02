@@ -1,8 +1,9 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+      "source": "/api/:path*",
+      "destination": "https://developlee20.store/api/:path*"
+    },
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
