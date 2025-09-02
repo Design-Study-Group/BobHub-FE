@@ -17,7 +17,7 @@
 
 .profile-card {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 20px;
 }
 
@@ -27,28 +27,100 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--primary);
+  flex-shrink: 0;
+}
+
+.profile-info {
+  flex-grow: 1;
+}
+
+.profile-name-container, .inline-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.3125rem; /* 5px */
 }
 
 .profile-info h3 {
   font-size: 20px;
   font-weight: 600;
   color: var(--foreground);
-  margin-bottom: 0.3125rem; /* 5px */
+  margin: 0;
+}
+
+.profile-name-input {
+  padding: 5px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--input);
+  color: var(--foreground);
+  /* Inherits font styles from global css */
+}
+
+.edit-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--muted-foreground);
+  display: flex; /* For centering svg */
+  align-items: center;
+}
+
+.edit-icon-btn:hover {
+  color: var(--foreground);
+}
+
+.inline-edit-container .btn-save, .inline-edit-container .btn-cancel {
+  padding: 5px 10px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  flex-shrink: 0; /* Prevent buttons from shrinking */
+}
+
+.btn-save {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.btn-cancel {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
 }
 
 .profile-info p {
   font-size: 16px;
   color: var(--muted-foreground);
-  margin-bottom: 0.1875rem; /* 3px */
+  margin-bottom: 0.5rem; /* 8px */
+}
+
+.btn-delete {
+  background: none;
+  border: none;
+  color: var(--muted-foreground);
+  text-decoration: underline;
+  padding: 0;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 0.5rem; /* Space between delete and bio */
+}
+
+.btn-delete:hover {
+  color: var(--foreground);
 }
 
 @media (max-width: 768px) {
   .profile-card {
     flex-direction: column;
+    align-items: center;
     text-align: center;
   }
 
   .profile-info {
-    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
