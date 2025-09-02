@@ -3,7 +3,7 @@ import { GetAxiosInstance, PostAxiosInstance } from '../axios/AxiosMethod';
 // 파티 목록 조회
 export const fetchParties = async (category = "DELIVERY") => {
   try {
-    let url = '/parties';
+    let url = '/api/parties';
     
     // 카테고리 파라미터 추가
     if (category) {
@@ -33,7 +33,7 @@ export const fetchParties = async (category = "DELIVERY") => {
 // 새 파티 생성 (JSON으로 전송)
 export const createParty = async (payload) => {
   try {
-    const response = await PostAxiosInstance('/parties', payload);
+    const response = await PostAxiosInstance('/api/parties', payload);
     
     // 백엔드에서 보낸 메시지가 있으면 alert
     if (response.data.message) {
@@ -58,7 +58,7 @@ export const createParty = async (payload) => {
 // 파티 참여
 export const joinParty = async (partyId) => {
   try {
-    const response = await PostAxiosInstance(`/parties/${partyId}/join`, {});
+    const response = await PostAxiosInstance(`/api/parties/${partyId}/join`, {});
     
     // 백엔드에서 보낸 메시지가 있으면 alert
     if (response.data.message) {
@@ -76,6 +76,28 @@ export const joinParty = async (partyId) => {
       alert('파티 참여에 실패했습니다.');
     }
     
+    throw error;
+  }
+};
+
+// 파티 댓글 조회
+export const fetchComments = async (partyId) => {
+  try {
+    const response = await GetAxiosInstance(`/api/parties/${partyId}/comments`);
+    return response.data;
+  } catch (error) {
+    console.error('댓글 조회 실패:', error);
+    return [];
+  }
+};
+
+// 파티 댓글 생성
+export const addComment = async (partyId, payload) => {
+  try {
+    const response = await PostAxiosInstance(`/api/parties/${partyId}/comments`, payload);
+    return response.data;
+  } catch (error) {
+    console.error('댓글 생성 실패:', error);
     throw error;
   }
 };
