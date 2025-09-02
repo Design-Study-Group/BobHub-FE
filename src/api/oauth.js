@@ -2,6 +2,7 @@ import {
   DeleteAxiosInstance,
   GetAxiosInstance,
   PostAxiosInstance,
+  PutAxiosInstance,
 } from '../axios/AxiosMethod';
 
 export const getUserProfile = async () => {
@@ -37,6 +38,16 @@ export const logoutUser = async () => {
     return res;
   } catch (e) {
     console.error('Logout failed', e);
+    throw e;
+  }
+};
+
+export const updateUserProfile = async (userData) => {
+  try {
+    const res = await PutAxiosInstance('/api/user/profile', userData);
+    return res;
+  } catch (e) {
+    console.error('Failed to update user profile', e);
     throw e;
   }
 };
