@@ -1,10 +1,18 @@
 import axios from "axios";
-import { getRefresh } from '../api/oauth';
+
+const baseURL = import.meta.env.VITE_API_URL;
 
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: baseURL,
     withCredentials: true, // 쿠키를 포함하여 요청을 보낼 수 있도록 설정
 });
+
+const refreshAxiosInstance = axios.create({
+    baseURL: baseURL,
+    withCredentials: true,
+});
+
+const getRefresh = () => refreshAxiosInstance.get('/api/refresh');
 
 axiosInstance.interceptors.request.use(
     async (config) => {
@@ -24,42 +32,39 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-    async (response) => {
-        return response;
-    },
+    // 성공 응답은 그대로 반환
+    (response) => response,
 
+    // 에러 처리
     async (error) => {
-        // 토큰 만료 에러 코드 (예: AUTH_001)가 발생했을 때만 처리
-        if (error.response?.data?.code === 'AUTH_001') {
-            console.log('토큰 만료, 갱신 시도');
-            const originalConfig = error.config;
-            // 재요청을 한 번만 시도하도록 플래그 설정 (무한 루프 방지)
-            if (originalConfig._retry) {
-                localStorage.clear();
-                window.location.href = '/login';
-                alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
-                return Promise.reject(error);
-            }
-            originalConfig._retry = true;
+        const originalConfig = error.config;
+        const errorCode = error.response?.data?.code;
+
+        // 1. 액세스 토큰 만료 시, 토큰 갱신 시도
+        if (errorCode === 'AUTH_001' && !originalConfig._retry) {
+            originalConfig._retry = true; // 무한 루프 방지를 위해 재시도 플래그 설정
 
             try {
-                // getRefresh 함수는 이제 백엔드에서 쿠키를 통해 리프레시 토큰을 처리한다고 가정합니다.
-                // 따라서 클라이언트에서 리프레시 토큰을 명시적으로 전달할 필요가 없습니다.
-                // 백엔드는 리프레시 토큰 쿠키를 확인하고 새 액세스 토큰 쿠키를 설정할 것입니다.
-                await getRefresh(); // 리프레시 토큰을 인자로 전달하지 않음
-
-                // 새 액세스 토큰은 쿠키에 설정되었으므로, 다음 요청 시 브라우저가 자동으로 포함합니다.
-                // 따라서 originalConfig.headers['Authorization']을 수동으로 업데이트할 필요가 없습니다.
-                return axiosInstance(originalConfig);
-            } catch (e) {
-                // 리프레시 실패 시 로그인 페이지로 리다이렉트
+                await getRefresh(); // 새 액세스 토큰 발급 시도
+                return axiosInstance(originalConfig); // 원래 요청을 다시 시도
+            } catch (refreshError) {
+                // 리프레시 토큰마저 만료되었거나 유효하지 않은 경우 -> 로그아웃
+                alert('세션이 만료되었습니다. 다시 로그인해주세요.');
                 localStorage.clear();
                 window.location.href = '/login';
-                alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
-                return Promise.reject(e);
+                return Promise.reject(refreshError);
             }
         }
-        // 다른 종류의 에러는 그대로 반환
+
+        // 2. 유효하지 않은 토큰 / 토큰 없음 에러 시 -> 로그아웃
+        if (errorCode === 'AUTH_002' || errorCode === 'AUTH_003') {
+            alert('인증 정보가 유효하지 않습니다. 다시 로그인해주세요.');
+            localStorage.clear();
+            window.location.href = '/login';
+            return Promise.reject(error);
+        }
+
+        // 그 외 다른 모든 에러는 그대로 반환 (AUTH_004 포함)
         return Promise.reject(error);
     }
 );
