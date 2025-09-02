@@ -139,7 +139,7 @@ export default function App() {
               <Route path="/betting" element={<BettingParty currentUser={currentUser} />} />
               <Route path="/restaurant" element={<RestaurantRecommend currentUser={currentUser} />} />
               <Route path="/restaurant/:id" element={<RestaurantDetailWrapper currentUser={currentUser} />} /> {/* 추가 */}
-              <Route path="/mypage" element={<MyPage currentUser={currentUser} />} />
+              <Route path="/mypage" element={<MyPage currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
               <Route path="*" element={<DashboardWrapper />} />
             </Routes>
           </main>

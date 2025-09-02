@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ProfileSection.css';
 import defaultProfileImage from '../../../assets/icons/default-profile.png';
-import { updateUserProfile, deleteUser } from '../../../api/oauth';
+import { updateUserProfile, deleteUser, logoutUser } from '../../../api/oauth';
 
 // SVG Icon Component
 const PencilIcon = () => (
@@ -69,7 +69,7 @@ const PencilIcon = () => (
   </svg>
 );
 
-const ProfileSection = ({ userProfile }) => {
+const ProfileSection = ({ userProfile, setCurrentUser }) => {
   const [imageError, setImageError] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(userProfile.name);
@@ -103,6 +103,9 @@ const ProfileSection = ({ userProfile }) => {
     }
     try {
       await updateUserProfile({ name: name });
+      const updatedUser = { ...userProfile, name };
+      setCurrentUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
       setInitialName(name);
       setIsEditing(false);
       alert('이름이 성공적으로 변경되었습니다.');
@@ -116,7 +119,13 @@ const ProfileSection = ({ userProfile }) => {
       try {
         await deleteUser();
         alert('회원 탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.');
-        window.location.href = '/'; // Redirect to homepage
+
+        // 탈퇴 성공 후 로그아웃 처리
+        try {
+          await logoutUser();
+        } finally {
+          window.location.href = '/'; // 로그아웃 API 호출 결과와 상관없이 홈으로 이동
+        }
       } catch (error) {
         alert('회원 탈퇴 처리 중 오류가 발생했습니다.');
       }

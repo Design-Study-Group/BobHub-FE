@@ -4,7 +4,7 @@ import ActivitySection from './components/ActivitySection';
 import { getUserActivity } from '../../api/oauth';
 import './MyPage.css';
 
-const MyPage = ({ currentUser }) => {
+const MyPage = ({ currentUser, setCurrentUser }) => {
   const [activityHistory, setActivityHistory] = useState([]);
   const [loadingActivities, setLoadingActivities] = useState(true);
   const [activityError, setActivityError] = useState(null);
@@ -34,7 +34,7 @@ const MyPage = ({ currentUser }) => {
   return (
     <div className="mypage-container">
       <div className="container">
-        {currentUser && <ProfileSection userProfile={currentUser} />}
+                {currentUser && <ProfileSection userProfile={currentUser} setCurrentUser={setCurrentUser} />}
         <ActivitySection 
           activityHistory={activityHistory}
           loading={loadingActivities}
