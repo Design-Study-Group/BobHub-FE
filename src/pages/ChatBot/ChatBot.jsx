@@ -24,6 +24,7 @@ const ChatBot = () => {
 
   useEffect(() => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080'; // Default for local dev
+    console.log('Backend URL:', backendUrl); // Add this line for debugging
     const socket = new SockJS(`${backendUrl}/api/chatbot`);
     stompClient.current = Stomp.over(socket); // STOMP 클라이언트 생성 및 ref에 할당
 
