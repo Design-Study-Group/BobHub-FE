@@ -6,11 +6,11 @@ const QuickButtons = ({ buttons, onButtonClick }) => {
     <div className="quick-buttons">
       {buttons.map(button => (
         <button
-          key={button}
+          key={button.value}
           className="quick-button"
           onClick={() => onButtonClick(button)}
         >
-          {button}
+          {button.label}
         </button>
       ))}
     </div>

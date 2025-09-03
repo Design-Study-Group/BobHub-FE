@@ -72,6 +72,11 @@
   color: var(--foreground);
 }
 
+.edit-icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
 .inline-edit-container .btn-save, .inline-edit-container .btn-cancel {
   padding: 5px 10px;
   border-radius: var(--radius);
@@ -123,5 +128,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .profile-name-container {
+    justify-content: center;
   }
 }
