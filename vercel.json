@@ -4,6 +4,10 @@
       "source": "/api/:path*",
       "destination": "https://developlee20.store/api/:path*"
     },
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "source": "/sockjs-node/:path*",
+      "destination": "https://developlee20.store/sockjs-node/:path*"
+    },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

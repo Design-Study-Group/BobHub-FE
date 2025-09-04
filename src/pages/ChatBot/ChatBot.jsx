@@ -23,21 +23,12 @@ const ChatBot = () => {
   const stompClient = useRef(null);
 
   useEffect(() => {
-    const getCookie = (name) => {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
-    };
-
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || `${window.location.protocol}//${window.location.hostname}:8080`;
-    console.log('Backend URL:', backendUrl);
-    const socket = new SockJS(`${backendUrl}/api/chatbot`);
+    // Vercel 프록시가 이 요청을 백엔드로 전달해줍니다.
+    const socket = new SockJS('/api/chatbot');
     stompClient.current = Stomp.over(socket);
 
-    const accessToken = getCookie('accessToken');
-    const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
-
-    stompClient.current.connect(headers, (frame) => {
+    // 프록시를 통해 쿠키가 자동으로 전달되므로, 헤더에 토큰을 추가할 필요가 없습니다.
+    stompClient.current.connect({}, (frame) => {
       setIsConnected(true);
       console.log('Connected: ' + frame);
 
