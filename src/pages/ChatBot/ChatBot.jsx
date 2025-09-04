@@ -23,18 +23,21 @@ const ChatBot = () => {
   const stompClient = useRef(null);
 
   useEffect(() => {
+    const getCookie = (name) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    };
+
     const backendUrl = import.meta.env.VITE_BACKEND_URL || `${window.location.protocol}//${window.location.hostname}:8080`;
     console.log('Backend URL:', backendUrl);
-    const socket = new SockJS(`${backendUrl}/api/chatbot`, null, {
-      transportOptions: {
-        xhr: {
-          withCredentials: true,
-        },
-      },
-    });
-    stompClient.current = Stomp.over(socket); // STOMP 클라이언트 생성 및 ref에 할당
+    const socket = new SockJS(`${backendUrl}/api/chatbot`);
+    stompClient.current = Stomp.over(socket);
 
-    stompClient.current.connect({}, (frame) => {
+    const accessToken = getCookie('accessToken');
+    const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
+
+    stompClient.current.connect(headers, (frame) => {
       setIsConnected(true);
       console.log('Connected: ' + frame);
 
