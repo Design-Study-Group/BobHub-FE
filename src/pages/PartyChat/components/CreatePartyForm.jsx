@@ -2,9 +2,9 @@ import React from 'react';
 import './CreatePartyForm.css';
 
 const partyCategories = [
-  { id: 'delivery', label: '배달' },
-  { id: 'dining', label: '외식' },
-  { id: 'lunchbox', label: '도시락' },
+  { id: 'DINE_OUT', label: '외식' },
+  { id: 'DELIVERY', label: '배달' },
+  { id: 'LUNCHBOX', label: '도시락' }
 ];
 
 const CreatePartyForm = ({ newPartyData, setNewPartyData, setNewPartyForm, handleCreateParty }) => {

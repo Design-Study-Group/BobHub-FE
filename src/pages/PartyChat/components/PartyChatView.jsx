@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import './PartyChatView.css';
 import { GetAxiosInstance, PostAxiosInstance } from '../../../axios/AxiosMethod';
 
@@ -22,6 +22,14 @@ const PartyChatView = ({ selectedParty, setSelectedParty, handleJoinParty, curre
   const [isConnected, setIsConnected] = useState(false);
   const socketRef = useRef(null);
 
+  // 메시지가 업데이트될 때마다 자동 스크롤
+  useLayoutEffect(() => {
+    const chatContainer = document.querySelector('.chat-messages');
+    if (chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  }, [messages]);
+
   // 채팅방 조회
   const loadChatRoom = async () => {
     try {
@@ -31,7 +39,8 @@ const PartyChatView = ({ selectedParty, setSelectedParty, handleJoinParty, curre
       
       if (data) {
         setChatRoom(data);
-        await loadMessages(data.partyId);
+        // 채팅방 정보를 불러온 후 히스토리 로드
+        await loadChatHistory(data.partyId);
       } else {
         setChatRoom(null);
       }
@@ -44,26 +53,55 @@ const PartyChatView = ({ selectedParty, setSelectedParty, handleJoinParty, curre
   };
 
   const handleJoinPartyAndRefresh = async (partyId) => {
-  await handleJoinParty(partyId);
-  await loadChatRoom();
-};
+    await handleJoinParty(partyId);
+    await loadChatRoom();
+  };
 
-
-  const loadMessages = async (roomId) => {
+  // 채팅 히스토리 로드 함수 추가
+  const loadChatHistory = async (partyId) => {
     try {
-      // 임시로 더미 메시지 로드 (실제로는 API에서 가져옴)
-      const dummyMessages = [
-        { 
+      console.log('채팅 히스토리 로드 시작:', partyId);
+      // 실제 API 호출로 채팅 히스토리 불러오기
+      const response = await GetAxiosInstance(`/api/parties/${partyId}/comments/history`);
+      const historyData = response?.data;
+      console.log('채팅 히스토리 데이터:', historyData);
+      
+      if (historyData && historyData.length > 0) {
+        // DB에서 가져온 히스토리 메시지들을 설정
+        const historyMessages = historyData.map(msg => ({
+          id: msg.id,
+          roomId: msg.roomId,
+          sender: msg.sender,
+          userId: msg.userId,
+          content: msg.content,
+          timestamp: msg.timestamp,
+          isHistory: true // 히스토리 메시지임을 표시
+        }));
+        
+        console.log('채팅 히스토리 로드 완료:', historyMessages.length, '개 메시지');
+        setMessages(historyMessages);
+      } else {
+        // 히스토리가 없으면 시스템 메시지만 표시
+        const systemMessage = { 
           id: 'system-1', 
           sender: '시스템', 
           content: '파티가 참여되었습니다! \n 모집이 완료되면 채팅을 사용할 수 없습니다.', 
-          timestamp: new Date().toISOString() 
-        }
-      ];
-      setMessages(dummyMessages);
+          timestamp: new Date().toISOString(),
+          isHistory: false
+        };
+        setMessages([systemMessage]);
+      }
     } catch (error) {
-      console.error('메시지 로드 실패:', error);
-      setMessages([]);
+      console.error('채팅 히스토리 로드 실패:', error);
+      // 에러 발생시 기본 시스템 메시지 표시
+      const systemMessage = { 
+        id: 'system-1', 
+        sender: '시스템', 
+        content: '파티에 참여되었습니다! 모집이 완료되면 채팅을 사용할 수 없습니다.', 
+        timestamp: new Date().toISOString(),
+        isHistory: false
+      };
+      setMessages([systemMessage]);
     }
   };
 
@@ -75,7 +113,10 @@ const PartyChatView = ({ selectedParty, setSelectedParty, handleJoinParty, curre
       setSubmitting(true);
       const newMessage = {
         id: Date.now(), // 임시 고유 id
+        roomId: chatRoom.partyId,
+        type: 'TALK',
         sender: currentUser?.name || '익명',
+        userId: currentUser?.id,
         content: messageContent,
         timestamp: new Date().toISOString()
       };
@@ -94,44 +135,53 @@ const PartyChatView = ({ selectedParty, setSelectedParty, handleJoinParty, curre
     }
   };
 
-useEffect(() => {
-  if (!selectedParty) return;
+  useEffect(() => {
+    if (!selectedParty) return;
 
-  const ws = new WebSocket(`ws://localhost:8080/ws/chat/${selectedParty.id}`);
-  socketRef.current = ws;
+    const ws = new WebSocket(`ws://localhost:8080/ws/chat/${selectedParty.id}`);
+    socketRef.current = ws;
 
-  ws.onopen = () => {
-    setIsConnected(true);
-    // 입장 메시지 전송
-    const enterMessage = {
-      type: 'ENTER',
-      sender: currentUser?.name,
-      userId: currentUser?.id,
-      content: `${currentUser?.name}`,
-      timestamp: new Date().toISOString()
+    ws.onopen = () => {
+      setIsConnected(true);
+      // 입장 메시지 전송
+      const enterMessage = {
+        type: 'ENTER',
+        roomId: `${selectedParty.id}`,
+        sender: currentUser?.name,
+        userId: currentUser?.id,
+        content: `${currentUser?.name}`,
+        timestamp: new Date().toISOString()
+      };
+      ws.send(JSON.stringify(enterMessage));
     };
-    ws.send(JSON.stringify(enterMessage));
-  };
 
-   ws.onmessage = (event) => {
-    try {
-      const messageData = JSON.parse(event.data);
-      if (messageData.type === "CLOSED") {
-        setChatRoom({ type: "CLOSED", message: messageData.message });
-        setMessages([]); // 채팅 메시지 초기화
-      } else {
-        setMessages((prev) => [...prev, messageData]);
+    ws.onmessage = (event) => {
+      try {
+        const messageData = JSON.parse(event.data);
+        if (messageData.type === "CLOSED") {
+          console.log(messageData.message);
+          setChatRoom({ type: "CLOSED", message: messageData.message });
+          setMessages([]); // 채팅 메시지 초기화
+        } else if(messageData.type === "NONMEMBER") {
+          setMessages([]); // 채팅 메시지 초기화
+          console.log(messageData.message);
+          setChatRoom({ type: "NONMEMBER", message: messageData.message });
+        } else {
+          // 실시간 메시지는 기존 메시지에 추가
+          setMessages((prev) => [...prev, { ...messageData, isHistory: false }]);
+        }
+      } catch (error) {
+        console.error('메시지 파싱 실패:', error);
       }
-    } catch (error) {
-      console.error('메시지 파싱 실패:', error);
-    }
-  };
+    };
+
     ws.onclose = () => setIsConnected(false);
     ws.onerror = (error) => {
       console.error('WebSocket 에러:', error);
       setIsConnected(false);
     };
 
+    // 채팅방 정보와 히스토리를 먼저 로드
     loadChatRoom();
 
     return () => {
@@ -181,6 +231,8 @@ useEffect(() => {
             <div className="chat-loading"><p>채팅방을 불러올 수 없습니다.</p></div>
           ) : chatRoom.type === "CLOSED" ? (
             <div className="chat-loading"><p>{chatRoom.message}</p></div>
+          ) : chatRoom.type === "NONMEMBER" ? (
+            <div className="chat-loading"><p>{chatRoom.message}</p></div>
           ) : (
           <>
             <div className="chat-header-info">
@@ -191,27 +243,37 @@ useEffect(() => {
               </div>
             </div>
 
-            <div className="chat-messages">
-              {messages.length === 0 ? (
-                <div className="message-info">아직 메시지가 없습니다.</div>
-              ) : (
-                messages.map((message, index) => {
-                  const isMine = message.sender === (currentUser?.name || '익명');
-                  return (
-                    <div
-                      key={message.id || index}
-                      className={`chat-message ${isMine ? 'mine' : 'other'}`}
-                    >
-                      <div className="message-content">{message.content}</div>
-                      <div className="message-meta">
-                        <span className="message-sender">{isMine ? '나' : message.sender}</span>
-                        <span className="message-time">{new Date(message.timestamp).toLocaleTimeString('ko-KR')}</span>
-                      </div>
+           <div className="chat-messages">
+            {messages.length === 0 ? (
+              <div className="message-info">아직 메시지가 없습니다.</div>
+            ) : (
+              messages.map((message, index) => {
+                // userId 비교 로직 개선
+                console.log('Current User ID:', currentUser?.id, 'Message User ID:', message.userId);
+                const currentUserId = currentUser?.id;
+                const messageUserId = message.userId;
+                const isMine = currentUserId && messageUserId && currentUserId === messageUserId;
+                
+                return (
+                  <div
+                    key={`${message.userId}-${message.timestamp}-${index}`} // 더 고유한 키 사용
+                    className={`chat-message ${isMine ? 'mine' : 'other'} ${message.isHistory ? 'history' : 'realtime'}`}
+                  >
+                    <div className="message-content">{message.content}</div>
+                    <div className="message-meta">
+                      <span className="message-sender">
+                        {isMine ? '나' : (message.sender || '알 수 없음')}
+                      </span>
+                      <span className="message-time">
+                        {new Date(message.timestamp).toLocaleTimeString('ko-KR')}
+                      </span>
+                      {message.isHistory && <span className="history-indicator"></span>}
                     </div>
-                  );
-                })
-              )}
-            </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
 
             <form className="chat-input" onSubmit={handleSendMessage}>
               <input 
