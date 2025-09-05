@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/chatbot/:path*",
+      "destination": "https://developlee20.store/chatbot/:path*"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://developlee20.store/api/:path*"
     },
