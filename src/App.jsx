@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // 추가
+import { useParams, useNavigate } from 'react-router-dom';
 import useTheme from './hooks/useTheme';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './pages/Header/Header';
@@ -7,13 +7,15 @@ import Login from './pages/Login/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
 import ChatBot from './pages/ChatBot/ChatBot';
 import PartyChat from './pages/PartyChat/PartyChat';
+import PartyChatView from './pages/PartyChat/components/PartyChatView'; // 추가
 import BettingParty from './pages/BettingParty/BettingParty';
 import RestaurantRecommend from './pages/RestaurantRecommend/RestaurantRecommend';
-import RestaurantDetail from './pages/RestaurantRecommend/components/RestaurantDetail'; // 추가
+import RestaurantDetail from './pages/RestaurantRecommend/components/RestaurantDetail';
 import MyPage from './pages/MyPage/MyPage';
 import CallBack from './auth/CallBack';
 import { logoutUser, getUserProfile } from './api/oauth';
-import { getRecommendationById } from './api/restaurantApi'; // 추가
+import { getRecommendationById } from './api/restaurantApi';
+import { getPartyById } from './api/PartyChat'; // 추가
 import './App.css';
 
 // RestaurantDetailWrapper 컴포넌트 정의
@@ -56,6 +58,51 @@ const RestaurantDetailWrapper = ({ currentUser }) => {
       restaurant={restaurant}
       onBack={() => navigate(-1)} // 뒤로 가기 기능
       currentUser={currentUser} // currentUser 전달
+    />
+  );
+};
+
+// PartyChatViewWrapper 컴포넌트 정의 (추가)
+const PartyChatViewWrapper = ({ currentUser }) => {
+  const { id } = useParams();
+  const [party, setParty] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchParty = async () => {
+      try {
+        const data = await getPartyById(id);
+        setParty(data);
+      } catch (err) {
+        console.error("Failed to fetch party details:", err);
+        setError('파티 상세 정보를 불러오는 데 실패했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchParty();
+  }, [id]);
+
+  if (loading) {
+    return <div className="loading">파티 상세 정보를 불러오는 중...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
+
+  if (!party) {
+    return <div className="error">파티 정보를 찾을 수 없습니다.</div>;
+  }
+
+  return (
+    <PartyChatView 
+      selectedParty={party}
+      setSelectedParty={() => navigate(-1)} // 뒤로 가기 기능
+      currentUser={currentUser}
+      handleJoinParty={() => { /* handle join logic if needed */ }}
     />
   );
 };
@@ -136,9 +183,10 @@ export default function App() {
               <Route path="/" element={<DashboardWrapper />} />
               <Route path="/chatbot" element={<ChatBot />} />
               <Route path="/party" element={<PartyChat currentUser={currentUser} />} />
+              <Route path="/party/:id" element={<PartyChatViewWrapper currentUser={currentUser} />} /> {/* 추가 */}
               <Route path="/betting" element={<BettingParty currentUser={currentUser} />} />
               <Route path="/restaurant" element={<RestaurantRecommend currentUser={currentUser} />} />
-              <Route path="/restaurant/:id" element={<RestaurantDetailWrapper currentUser={currentUser} />} /> {/* 추가 */}
+              <Route path="/restaurant/:id" element={<RestaurantDetailWrapper currentUser={currentUser} />} />
               <Route path="/mypage" element={<MyPage currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
               <Route path="*" element={<DashboardWrapper />} />
             </Routes>

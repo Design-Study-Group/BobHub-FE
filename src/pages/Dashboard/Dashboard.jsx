@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import FeaturesGrid from './components/FeaturesGrid';
 import RecentActivities from './components/RecentActivities';
 import './Dashboard.css';
+import axiosInstance from '../../axios/AxiosInstance';
 
 const Dashboard = ({ setCurrentPage }) => {
   const features = [
@@ -31,12 +32,20 @@ const Dashboard = ({ setCurrentPage }) => {
     }
   ];
 
-  const recentActivities = [
-    { type: 'party', message: '김철수님이 "점심 치킨 파티" 모집을 시작했어요', time: '5분 전', color: 'soft-blue' },
-    { type: 'betting', message: '이영희님이 "커피값 룰렛 게임"에서 패자가 결정되었어요', time: '15분 전', color: 'soft-pink' },
-    { type: 'chatbot', message: 'AI가 "떡볶이 + 순대" 조합을 추천했어요', time: '30분 전', color: 'soft-purple' },
-    { type: 'restaurant', message: '새로운 맛집 "홍대 돈까스"가 등록되었어요', time: '1시간 전', color: 'soft-cyan' }
-  ];
+  const [recentActivities, setRecentActivities] = useState([]);
+
+  useEffect(() => {
+    const fetchRecentActivities = async () => {
+      try {
+        const response = await axiosInstance.get('/api/recent-activities');
+        setRecentActivities(response.data);
+      } catch (error) {
+        console.error('Error fetching recent activities:', error);
+      }
+    };
+
+    fetchRecentActivities();
+  }, []);
 
   return (
     <div className="pixel-dashboard">
