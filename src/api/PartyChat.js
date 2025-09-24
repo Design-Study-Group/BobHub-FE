@@ -30,6 +30,20 @@ export const fetchParties = async (category = "DELIVERY") => {
   }
 };
 
+// ID로 파티 조회
+export const getPartyById = async (partyId) => {
+  try {
+    const response = await GetAxiosInstance(`/api/parties/${partyId}`);
+    return response.data;
+  } catch (error) {
+    console.error('파티 조회 실패:', error);
+    if (error.response?.data?.message) {
+      alert(error.response.data.message);
+    }
+    throw error;
+  }
+};
+
 // 새 파티 생성 (JSON으로 전송)
 export const createParty = async (payload) => {
   try {
